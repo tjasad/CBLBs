@@ -1,11 +1,26 @@
+"""
+maximal values (concentrations) (power of 10)
+"""
 DOX_max = 4
 PRO_max = 3
 ALD_max = 5
-aCA_max = 6
+aCa_max = 6
 EST_max = 4
 DEX_max = 4
 
+scales = {"DOX": 10**DOX_max,
+          "PRO": 10**PRO_max,
+          "ALD": 10**ALD_max,
+          "aCa": 10**aCa_max,
+          "EST": 10**EST_max,
+          "DEX": 10**DEX_max}
+
+
 #####
+""" 
+Parameter bounds
+"""
+
 min_gamma = 0
 max_gamma = 10000
 
@@ -28,8 +43,11 @@ max_n = 10
 
 
 names = ('DOX', 'PRO', 'ALD', 'aCa', 'EST', 'DEX')
-max_vals = (DOX_max, PRO_max, ALD_max, aCA_max, EST_max, DEX_max)
+max_vals = (DOX_max, PRO_max, ALD_max, aCa_max, EST_max, DEX_max)
 
+""" 
+Parameter values for each cell -- From Macia et al. (2016)
+"""
 params = {"IL1": (65.3,0.26,5.66*10**(-11),3.7), #ID_DOX
           "IL2": (10,8.7,2.5*10**(-3),1.7), # ID_PRO
           "IL3": (97,0,8.2*10**(-5),3.5), # ID_ALD
@@ -92,29 +110,3 @@ cells = {"ID_DOX":"IL1",
          "NOT_alphaCa":"OL3",
          "BL":"BL"}
 
-"""
-cells = {"ID_DOX":"IL2",
-         "NOT_DOX":"IL1",
-         "ID_PRO":"IL4",
-         "NOT_PRO":"IL3",
-         "ID_ALD":"IL6",
-         "NOT_ALD":"IL5",
-         "ID_aCa":"IL8",
-         "NOT_aCa":"IL7",
-         "ID_EST":"IL10",
-         "NOT_EST":"IL9",
-         "ID_DEX":"IL12",
-         "NOT_DEX":"IL11",
-         "NOT_GFP":"OL1_GFP",
-         "NOT_GFP_au":"OL1_GFP_au",
-         "NOT_mCherry":"OL2",
-         "NOT_alphaCa":"OL3",
-         "BL":"BL"}
-"""
-
-scales = {"DOX": 10**4,
-          "PRO": 10**3,
-          "ALD": 10**5,
-          "aCa": 10**6,
-          "EST": 10**3,
-          "DEX": 10**4}

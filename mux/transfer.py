@@ -13,7 +13,7 @@ def T_f_fit(I, gamma, alpha1, alpha2, omega1, omega2, n):
 # inverse transfer function
 def iT_f(O, gamma, alpha, omega, n):
     #return (((O/gamma) - 1)/(alpha*omega - (O/gamma) * omega))**(1/n)
-    #if alpha-(O/gamma) == 0:
+    #if alpha-(O/gamma) == 0: # pri izpeljavi (invertiranju) smo predpostavili, da je alpha-(O/gamma) != 0 (to ni nujno res)
     #    return 1000
     #else:
     return ((O-gamma)/(alpha*gamma*omega-omega*O))**(1/n)
