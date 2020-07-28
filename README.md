@@ -1,1 +1,1 @@
-# BioMux
+# CLBBs: Configurable Logic Biological Blocks
