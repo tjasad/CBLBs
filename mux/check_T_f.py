@@ -18,13 +18,13 @@ for name, max_val in zip(names[:], max_vals[:]):
 
     y = T_f(x, *params[cells["ID_"+name]])
     inv_y = iT_f(y,*params[cells["ID_"+name]])
-    print(x-inv_y)
+    #print(x-inv_y)
 
 
     not_y = T_f(x, *params[cells["NOT_"+name]])
     not_inv_y = iT_f(not_y,*params[cells["NOT_"+name]])
     
-    print(x-not_inv_y)
+    #print(x-not_inv_y)
 
     gamma, alpha, omega, n = params[cells["NOT_"+name]]
     l = alpha-(not_y/gamma)    
