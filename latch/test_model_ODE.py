@@ -34,7 +34,7 @@ T1 = np.arange(0,t1+dt,dt)
 Y1 = np.zeros([1+N,6])
 Y1[0,:] = Y0
 
-r = ode(toggle_model_ODE).set_integrator('vode', method='adams')
+r = ode(toggle_model_ODE).set_integrator('lsoda', method='adams')
 r.set_initial_value(Y0, T1[0]).set_f_params(params)
 
 i = 1
