@@ -35,7 +35,7 @@ def population(state, params):
     N = state
     r = params
 
-    dN = r * N * (1 - N)
+    dN = r * N * (1 - N)    
 
     return dN
 

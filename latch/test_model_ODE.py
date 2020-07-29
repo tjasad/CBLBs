@@ -4,18 +4,18 @@ import matplotlib.pyplot as plt
 from models import *
 from parameters import *
 
-params = [delta_L, gamma_A, gamma_B, n_a, n_b, theta_A, theta_B, eta_a, eta_b, omega_a, omega_b, m_a, m_b, delta_a, delta_b, rho_a, rho_b, r_A, r_B]
+#params = [delta_L, gamma_A, gamma_B, n_a, n_b, theta_A, theta_B, eta_a, eta_b, omega_a, omega_b, m_a, m_b, delta_a, delta_b, rho_a, rho_b, r_A, r_B]
 #params = [delta_L, gamma_A, gamma_A, n_a, n_a, theta_A, theta_A, eta_a, eta_a, omega_a, omega_a, m_a, m_a, delta_a, delta_a, rho_a, rho_a, r_A, r_A]
-#params = [delta_L, gamma_B, gamma_B, n_b, n_b, theta_B, theta_B, eta_b, eta_b, omega_b, omega_b, m_b, m_b, delta_b, delta_b, rho_b, rho_b, r_B, r_B]
+params = [delta_L, gamma_B, gamma_B, n_b, n_b, theta_B, theta_B, eta_b, eta_b, omega_b, omega_b, m_b, m_b, delta_b, delta_b, rho_b, rho_b, r_B, r_B]
 
 # simulation parameters
-t_end = 200
+t_end = 500
 N = t_end*2
 
 # Y = L_A, L_B, a, b, N_A, N_B
-Y0 = np.array([0]*6)
-Y0[-2] = 1
-Y0[-1] = 1
+Y0 = np.array([0.0]*6)
+Y0[-2] = 0.1
+Y0[-1] = 0.1
 Y0[2] = 0
 T1 = np.linspace(0, t_end, N)
 T2 = np.linspace(0, t_end, N)
@@ -34,7 +34,7 @@ T1 = np.arange(0,t1+dt,dt)
 Y1 = np.zeros([1+N,6])
 Y1[0,:] = Y0
 
-r = ode(toggle_model_ODE).set_integrator('zvode', method='bdf')
+r = ode(toggle_model_ODE).set_integrator('vode', method='adams')
 r.set_initial_value(Y0, T1[0]).set_f_params(params)
 
 i = 1
@@ -126,6 +126,27 @@ while r.successful() and r.t < t1:
 
 T5 += 4*t_end
 
+# 6
+
+params[-4] = 0
+params[-3] = 0
+
+t1 = t_end
+dt = t_end/N
+T6 = np.arange(0,t1+dt,dt)
+Y0 = Y5[-1,:]
+Y6 = np.zeros([1+N,6])
+Y6[0,:] = Y0
+
+r = ode(toggle_model_ODE).set_integrator('zvode', method='bdf')
+r.set_initial_value(Y0, T6[0]).set_f_params(params)
+i = 1
+while r.successful() and r.t < t1:
+    Y6[i,:] = r.integrate(r.t+dt)
+    i += 1
+
+T6 += 5*t_end
+
 
 """
 Y1 = odeint(toggle_model, Y0, T1, args=((tuple(params),)))
@@ -151,8 +172,8 @@ Y = np.append(np.append(np.append(np.append(Y1, Y2, axis=0), Y3, axis=0), Y4, ax
 T = np.append(np.append(np.append(np.append(T1, T2, axis=0), T3, axis=0), T4, axis=0), T5, axis=0)
 """
 
-Y = np.append(np.append(np.append(np.append(Y1, Y2, axis=0), Y3, axis=0), Y4, axis=0), Y5, axis=0)
-T = np.append(np.append(np.append(np.append(T1, T2, axis=0), T3, axis=0), T4, axis=0), T5, axis=0)
+Y = np.append(np.append(np.append(np.append(np.append(Y1, Y2, axis=0), Y3, axis=0), Y4, axis=0), Y5, axis=0), Y6, axis=0)
+T = np.append(np.append(np.append(np.append(np.append(T1, T2, axis=0), T3, axis=0), T4, axis=0), T5, axis=0), T6, axis=0)
 
 L_A = Y[:,0]
 L_B = Y[:,1]
