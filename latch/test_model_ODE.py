@@ -4,16 +4,16 @@ import matplotlib.pyplot as plt
 from models import *
 from parameters import *
 
-#params = [delta_L, gamma_A, gamma_B, n_a, n_b, theta_A, theta_B, eta_a, eta_b, omega_a, omega_b, m_a, m_b, delta_a, delta_b, rho_a, rho_b, r_A, r_B]
+params = [delta_L, gamma_A, gamma_B, n_a, n_b, theta_A, theta_B, eta_a, eta_b, omega_a, omega_b, m_a, m_b, delta_a, delta_b, rho_a, rho_b, r_A, r_B]
 #params = [delta_L, gamma_A, gamma_A, n_a, n_a, theta_A, theta_A, eta_a, eta_a, omega_a, omega_a, m_a, m_a, delta_a, delta_a, rho_a, rho_a, r_A, r_A]
-params = [delta_L, gamma_B, gamma_B, n_b, n_b, theta_B, theta_B, eta_b, eta_b, omega_b, omega_b, m_b, m_b, delta_b, delta_b, rho_b, rho_b, r_B, r_B]
+#params = [delta_L, gamma_B, gamma_B, n_b, n_b, theta_B, theta_B, eta_b, eta_b, omega_b, omega_b, m_b, m_b, delta_b, delta_b, rho_b, rho_b, r_B, r_B]
 
 # simulation parameters
 t_end = 500
 N = t_end*2
 
 # Y = L_A, L_B, a, b, N_A, N_B
-Y0 = np.array([0.0]*6)
+Y0 = np.zeros(6)#([0.0]*6)
 Y0[-2] = 0.1
 Y0[-1] = 0.1
 Y0[2] = 0

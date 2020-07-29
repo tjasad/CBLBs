@@ -13,6 +13,15 @@ def not_cell(state, params):
 
     return dL_X_dt, dx_dt
 
+    
+
+def yes_cell(state, params):
+    x, y, N_X, N_Y = state
+    gamma_x, n_y, theta_x, delta_x, rho_x = params
+
+    dx_dt = N_X * gamma_x * (y ** n_y)/(1 + (theta_x*y)**n_y ) - N_Y * (delta_x * x) - rho_x * x
+    
+    return dx_dt
 
 def not_cell_a(state, params):
     return not_cell(state, params)
