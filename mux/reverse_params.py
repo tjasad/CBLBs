@@ -7,13 +7,15 @@ from scipy.optimize import curve_fit
 
 from mux import *
 from transfer import *
-from data import *
+from parameters import *
 
 bounds_ID = ([min_gamma, min_alpha1, min_alpha2, min_omega1, min_omega2, min_n],
           [max_gamma, max_alpha1, max_alpha2, max_omega1, max_omega2, max_n])
 
 bounds_NOT = ([min_gamma, min_alpha1, min_alpha2, min_omega1, min_omega2, min_n],
           [max_gamma, max_alpha1, max_alpha2+4, max_omega1, max_omega2, max_n])
+
+reverse_from = "NOT_mCherry"
 
 direct_params = {}
 
@@ -28,7 +30,7 @@ for name, max_val in zip(names[:], max_vals[:]):
     """
 
     y = T_f(x, *params[cells["ID_"+name]])
-    GFP_x = iT_f(y,*params[cells["NOT_GFP"]])
+    GFP_x = iT_f(y,*params[cells[reverse_from]])
 
     idx = np.isfinite(GFP_x)
     x1 = x[idx]
@@ -50,7 +52,7 @@ for name, max_val in zip(names[:], max_vals[:]):
 
         if plot_on:
             plt.plot(x1,y1, label = "ID_"+name)
-            plt.plot(x1,GFP_x, label = "GFP_x")
+            plt.plot(x1,GFP_x, label = "reversed "+reverse_from)
             plt.plot(x1, y_fit1, label = "fit")
             #plt.plot(x1, y_fit11, label = "fit no bounds")
             plt.legend()
@@ -70,7 +72,7 @@ for name, max_val in zip(names[:], max_vals[:]):
     """
     
     not_y = T_f(x, *params[cells["NOT_"+name]])
-    not_GFP_x = iT_f(not_y,*params[cells["NOT_GFP"]])
+    not_GFP_x = iT_f(not_y,*params[cells[reverse_from]])
 
     idx = np.isfinite(not_GFP_x)
     x2 = x[idx]
@@ -91,7 +93,7 @@ for name, max_val in zip(names[:], max_vals[:]):
 
         if plot_on:
             plt.plot(x2,y2, label = "NOT_"+name)
-            plt.plot(x2,not_GFP_x, label = "NOT_GFP_x")
+            plt.plot(x2,not_GFP_x, label = "reversed "+reverse_from)
             plt.plot(x2, y_fit2, label = "fit")
             #plt.plot(x2, y_fit22, label = "fit no bounds")
             plt.legend()

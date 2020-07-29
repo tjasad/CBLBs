@@ -3,7 +3,7 @@ from transfer import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-from data import *
+from parameters import *
 
 
 for name, max_val in zip(names[:], max_vals[:]):

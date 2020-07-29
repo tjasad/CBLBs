@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 
 from transfer import *
-from data import *
+from parameters import *
 
 
 with open('direct_params.pickle', 'rb') as handle:
