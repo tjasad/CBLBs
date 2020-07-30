@@ -7,7 +7,7 @@ from parameters import *
 rho_x = 0
 rho_y = 0
 
-params = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X
+params = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X
 
 # I0, I1, I2, I3
 I = np.array([0, 0, 0, 0])

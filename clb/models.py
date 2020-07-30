@@ -116,7 +116,7 @@ def yes_model_ODE(T, state, params):
     return yes_model(state, T, params)
 
 def MUX_4_1_model(state, T, params):
-    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X = params
+    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X = params
     params_yes = gamma_x, n_y, theta_x, delta_x, rho_x
     params_not = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x
 
