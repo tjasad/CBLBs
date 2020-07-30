@@ -24,8 +24,9 @@ N = t_end
 Y0 = np.zeros(39)
 Y0[22:38] = 1 # number of cells
 
-Y0[:2] = S
-Y0[2:6] = I
+Y0[:4] = I
+Y0[4:6] = S
+
 
 T = np.linspace(0, t_end, N)
 

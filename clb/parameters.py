@@ -28,7 +28,7 @@ theta_a = theta_A
 theta_b = theta_B
 
 
-scenario = "a"
+scenario = "b"
 
 if scenario == "a":
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x = delta_L, gamma_A, n_a, theta_A, eta_a, omega_a, m_a, delta_a, delta_a, rho_a, rho_a, gamma_a, theta_a
