@@ -19,6 +19,12 @@ states = [([0,0], [0,0,0,0]), ([0,0], [1,0,0,0]),
           ([0,1], [1,1,0,0]), ([0,1], [1,1,1,0]), 
           ([1,1], [1,1,1,0]), ([1,1], [1,1,1,1])]
 
+states = [[(0,0), (0,0,0,0)], [(0,0), (1,0,0,0)], 
+          [(1,0), (1,0,0,0)], [(1,0), (1,1,0,0)], 
+          [(0,1), (1,1,0,0)], [(0,1), (1,1,1,0)], 
+          [(1,1), (1,1,1,0)], [(1,1), (1,1,1,1)]]
+
+
 # simulation parameters (for a single state)
 t_end = 500
 N = t_end
@@ -128,39 +134,61 @@ out = Y[:,-1]
 # plot
 
 ax1 = plt.subplot(341)
-ax1.plot(T, I0_a)
-ax1.plot(T, I0_b)
-ax1.legend(["I0_a = $I_0$", "I0_b"])
-ax1.set_title('I0 toggle')
+ax1.plot(T, I0_a, color="#800000ff", alpha=0.75)
+ax1.plot(T, I0_b, color="#999999ff", alpha=0.75)
+ax1.legend(["$I_0$", "$\\overline{I_0}$"])
+#ax1.set_title('$I_0$ toggle')
+ax1.set_xlabel("Time [min]")
+ax1.set_ylabel("Concentrations [nM]")
+
 
 ax2 = plt.subplot(342)
-ax2.plot(T, I1_a)
-ax2.plot(T, I1_b)
-ax2.legend(["I1_a = $I_1$", "I1_b"])
-ax2.set_title('I1 toggle')
+ax2.plot(T, I1_a, color = "#00ff00ff", alpha=0.75)
+ax2.plot(T, I1_b, color = "#666666ff")#, alpha=0.75)
+ax2.legend(["$I_1$", "$\\overline{I_1}$"])
+#ax2.set_title('$I_1$ toggle')
+ax2.set_xlabel("Time [min]")
+ax2.set_ylabel("Concentrations [nM]")
+
 
 ax3 = plt.subplot(343)
-ax3.plot(T, I2_a)
-ax3.plot(T, I2_b)
-ax3.legend(["I2_a = $I_2$", "I2_b"])
-ax3.set_title('I2 toggle')
+ax3.plot(T, I2_a, color = "#0000ffff", alpha=0.75)
+ax3.plot(T, I2_b, color = "#ecececfe")#, alpha=0.75)
+ax3.legend(["$I_2$", "$\\overline{I_2}$"])
+#ax3.set_title('$I_2$ toggle')
+ax3.set_xlabel("Time [min]")
+ax3.set_ylabel("Concentrations [nM]")
+
 
 ax4 = plt.subplot(344)
-ax4.plot(T, I3_a)
-ax4.plot(T, I3_b)
-ax4.legend(["I3_a = $I_3$", "I3_b"])
-ax4.set_title('I3 toggle')
+ax4.plot(T, I3_a, color = "#800080ff", alpha=0.75)
+ax4.plot(T, I3_b, color = "#999999fc")#, alpha=0.75)
+ax4.legend(["$I_3$", "$\\overline{I_3}$"])
+#ax4.set_title('$I_3$ toggle')
+ax4.set_xlabel("Time [min]")
+ax4.set_ylabel("Concentrations [nM]")
+
 
 ax5 = plt.subplot(312)
-ax5.plot(T,S0)
-ax5.plot(T,S1)
+ax5.plot(T,S0, color = "#ff6600ff", alpha=0.75)
+ax5.plot(T,S1, color = "#ffff00ff")#, alpha=0.75)
 ax5.legend(["$S_0$", "$S_1$"])
-ax5.set_title('Select inputs')
+#ax5.set_title('Select inputs')
+ax5.set_xlabel("Time [min]")
+ax5.set_ylabel("Concentrations [nM]")
 
 
 ax6 = plt.subplot(313)
-ax6.plot(T,out)
-ax6.set_title('out')
+ax6.plot(T,out, color = "#8080805a", alpha=0.75)
+#ax6.set_title('out')
+ax6.legend('out')
+ax6.set_xlabel("Time [min]")
+ax6.set_ylabel("Concentrations [nM]")
 
-plt.suptitle("$out = \\overline{S}_1 \\overline{S}_0 I_0 \\vee \\overline{S}_1 S_0 I_1 \\vee S_1 \\overline{S}_0 I_2 \\vee S_1 S_0 I_3$")
-plt.show()
+
+#plt.suptitle("$out = \\overline{S}_1 \\overline{S}_0 I_0 \\vee \\overline{S}_1 S_0 I_1 \\vee S_1 \\overline{S}_0 I_2 \\vee S_1 S_0 I_3$")
+plt.gcf().set_size_inches(15,10)
+plt.savefig("figs\\CLBB_ode.pdf", bbox_inches = 'tight')
+plt.show()  
+
+
