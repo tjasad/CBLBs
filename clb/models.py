@@ -1,4 +1,4 @@
-# Urrios 2016: multicellular memory
+# Urrios 2016: multicellular memory + Macia 2016
 
 import numpy as np
 
