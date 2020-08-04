@@ -13,28 +13,7 @@ def not_cell(state, params):
 
     return dL_X_dt, dx_dt
 
-def not_cell_stochastic(state, params, Omega):
-    L_X, x, y, N_X, N_Y = state
-    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x = params
-
-    gamma_L_X *= Omega
-    eta_x *= Omega
-    theta_L_X /= Omega
-    omega_x /= Omega
     
-
-    p = [0]*5
-    
-    p[0] = gamma_L_X * (y ** n_y)/(1 + (theta_L_X*y)**n_y ) / Omega
-    p[1] = delta_L * L_X
-
-    p[2] = N_X * (eta_x * (1/(1+ (omega_x*L_X)**m_x)))
-    p[3] = N_Y * (delta_x * x)
-    p[4] = N_X * rho_x * x
-
-    return p
-
-
 def yes_cell(state, params):
     x, y, N_X, N_Y = state
     gamma_x, n_y, theta_x, delta_x, rho_x = params
@@ -43,23 +22,6 @@ def yes_cell(state, params):
     
     return dx_dt
 
-def yes_cell_stochastic(state, params, Omega):
-    x, y, N_X, N_Y = state
-    gamma_x, n_y, theta_x, delta_x, rho_x = params
-
-    gamma_x *= Omega
-    theta_x /= Omega
-        
-
-    p = [0]*3
-
-    p[0] = N_X * gamma_x * (y ** n_y)/(1 + (theta_x*y)**n_y )
-    p[1] = N_Y * (delta_x * x) 
-    p[2] = rho_x * x
-    
-    return p
-
-
 def population(state, params):
     N = state
     r = params
@@ -67,17 +29,6 @@ def population(state, params):
     dN = r * N * (1 - N)    
 
     return dN
-
-def population_stochastic(state, params, Omega):
-    N = state
-    r = params
-    
-    p = [0]*2
-
-    p[0] = r * N
-    p[1] = r * Omega * N**2
-
-    return p
 
 
 def toggle_model(state, T, params):
@@ -99,25 +50,6 @@ def toggle_model(state, T, params):
         
     return np.array([dL_A_dt, dL_B_dt, da_dt, db_dt, dN_A_dt, dN_B_dt])
 
-def toggle_model_stochastic(state, params, Omega):
-    L_A, L_B, a, b, N_A, N_B = state
-
-    state_A = L_A, a, b, N_A, N_B
-    state_B = L_B, b, a, N_B, N_A
-    
-    delta_L, gamma_A, gamma_B, n_a, n_b, theta_A, theta_B, eta_a, eta_b, omega_a, omega_b, m_a, m_b, delta_a, delta_b, rho_a, rho_b, r_A, r_B = params
-
-    params_A = delta_L, gamma_A, n_b, theta_A, eta_a, omega_a, m_a, delta_a, rho_a
-    params_B = delta_L, gamma_B, n_a, theta_B, eta_b, omega_b, m_b, delta_b, rho_b
-
-    
-    p1 = not_cell_stochastic(state_A, params_A, Omega)
-    p2 = not_cell_stochastic(state_B, params_B, Omega)
-
-    #p3 = population_stochastic(N_A, r_A, Omega)
-    #p4 = population_stochastic(N_B, r_B, Omega)
-        
-    return p1 + p2
 
 # L_A ... intermediate
 # a ... out
@@ -314,123 +246,6 @@ def MUX_4_1_model(state, T, params):
 
     return dstate
 
-def MUX_4_1_model_stochastic(state, params, Omega):
-    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X = params
-    params_yes = gamma_x, n_y, theta_x, delta_x, rho_x
-    params_not = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x
-
-
-    I0, I1, I2, I3, S0, S1 = state[:6]
-    I0_out, I1_out, I2_out, I3_out = state[6:10]
-    L_I0_I0, L_I1_S0, L_I1_I1, L_I2_S1, L_I2_I2, L_I3_S0, L_I3_S1, L_I3_I3, L_I0, L_I1, L_I2, L_I3 = state[10:22]
-    N_I0_S0, N_I0_S1, N_I0_I0, N_I1_S0, N_I1_S1, N_I1_I1, N_I2_S0, N_I2_S1, N_I2_I2, N_I3_S0, N_I3_S1, N_I3_I3, N_I0, N_I1, N_I2, N_I3 = state[22:38]
-    out = state[38]
-    
-        
-    """
-     I0
-    """
-        
-    # yes S0: I0_S0
-    state_yes_I0_S0 = I0_out, S0, N_I0_S0, N_I0_S0
-    p_I0_S0 = yes_cell_stochastic(state_yes_I0_S0, params_yes, Omega)
-    
-
-    # yes S1: I0_S1
-    state_yes_I0_S1 = I0_out, S1, N_I0_S1, N_I0_S1
-    p_I0_S1 = yes_cell_stochastic(state_yes_I0_S1, params_yes, Omega)
-    
-
-    # not I0: I0_I0
-    state_not_I0_I0 = L_I0_I0, I0_out, I0, N_I0_I0, N_I0_I0
-    p_I0_I0 = not_cell_stochastic(state_not_I0_I0, params_not, Omega)    
-    
-    
-    """
-     I1
-    """
-    
-    # not S0: I1_S0
-    state_not_I1_S0 = L_I1_S0, I1_out, S0, N_I1_S0, N_I1_S0
-    p_I1_S0 = not_cell_stochastic(state_not_I1_S0, params_not, Omega)    
-    
-    
-    # yes S1: I1_S1
-    state_yes_I1_S1 = I1_out, S1, N_I1_S1, N_I1_S1
-    p_I1_S1 = yes_cell_stochastic(state_yes_I1_S1, params_yes, Omega)
-    
-    # not I1: I1_I1
-    state_not_I1_I1 = L_I1_I1, I1_out, I1, N_I1_I1, N_I1_I1
-    p_I1_I1 = not_cell_stochastic(state_not_I1_I1, params_not, Omega)    
-    
-
-    """
-    I2
-    """
-    
-    # yes S0: I2_S0
-    state_yes_I2_S0 = I2_out, S0, N_I2_S0, N_I2_S0
-    p_I2_S0 = yes_cell_stochastic(state_yes_I2_S0, params_yes, Omega)
-    
-
-    # not S1: I2_S1
-    state_not_I2_S1 = L_I2_S1, I2_out, S1, N_I2_S1, N_I2_S1
-    p_I2_S1= not_cell_stochastic(state_not_I2_S1, params_not, Omega)    
-    
-    
-    # not I2: I2_I2
-    state_not_I2_I2 = L_I2_I2, I2_out, I2, N_I2_I2, N_I2_I2
-    p_I2_I2 = not_cell_stochastic(state_not_I2_I2, params_not, Omega)    
-       
-
-    """
-    I3
-    """
-    # not S0: I3_S0
-    state_not_I3_S0 = L_I3_S0, I3_out, S0, N_I3_S0, N_I3_S0
-    p_I3_S0 = not_cell_stochastic(state_not_I3_S0, params_not, Omega)    
-        
-    
-    # not S1: I3_S1
-    state_not_I3_S1 = L_I3_S1, I3_out, S1, N_I3_S1, N_I3_S1
-    p_I3_S1 = not_cell_stochastic(state_not_I3_S1, params_not, Omega)    
-       
-
-    # not I3: I3_I3
-    state_not_I3_I3 = L_I3_I3, I3_out, I3, N_I3_I3, N_I3_I3
-    p_I3_I3 = not_cell_stochastic(state_not_I3_I3, params_not, Omega)    
-       
-
-    """
-    out
-    """
-    # not I0: I0
-    state_not_I0 = L_I0, out, I0_out, N_I0, N_I0
-    p_I0 = not_cell_stochastic(state_not_I0, params_not, Omega)    
-        
-
-    # not I1: I1
-    state_not_I1 = L_I1, out, I1_out, N_I1, N_I1
-    p_I1 = not_cell_stochastic(state_not_I1, params_not, Omega)    
-    
-
-    # not I2: I2
-    state_not_I2 = L_I2, out, I2_out, N_I2, N_I2
-    p_I2 = not_cell_stochastic(state_not_I2, params_not, Omega)    
-        
-
-    # not I3: I3
-    state_not_I3 = L_I3, out, I3_out, N_I3, N_I3
-    p_I3 = not_cell_stochastic(state_not_I3, params_not, Omega)    
-       
-    
-    return (p_I0_S0 + p_I0_S1 + p_I0_I0 + 
-           p_I1_S0 + p_I1_S1 + p_I1_I1 +
-           p_I2_S0 + p_I2_S1 + p_I2_I2 +
-           p_I3_S0 + p_I3_S1 + p_I3_I3 +
-           p_I0 + p_I1 + p_I2 + p_I3)
-
-
 def CLB_model(state, T, params):
     
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X, r_Y, rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b = params
@@ -509,8 +324,6 @@ def CLB_model(state, T, params):
     """
     dstate = np.append(dstate_toggles, dstate_mux, axis = 0)
     return dstate
-
-
 
 
 """
