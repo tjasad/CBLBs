@@ -1,1 +1,1 @@
-# CLBBs: Configurable Logic Biological Blocks
+# CBLBs: Configurable (Bio)Logic Blocks
