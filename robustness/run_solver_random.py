@@ -5,9 +5,9 @@ import numpy as np
 
 if __name__ == "__main__":
 
-    filename = "results\\cblb" 
+    filename = "results\\cblb_random_start" 
     
     #model = BioProc(np.array(["protein_production", "protein_production", "protein_production", "protein_production", "protein_degradation", "protein_degradation", "Kd","hill", "protein_production", "protein_degradation", "Kd", "hill"]), model_mode=three_bit_processor_ext, parameter_values=param_values, avg_dev=30)                                         
     model = model_clb()
-    solver = Solver(model, populationSize=1000)                         
+    solver = Solver(model, populationSize=1000, random_candidates=True)                         
     solver.run(filename, maxDepth=1) #do not cluster

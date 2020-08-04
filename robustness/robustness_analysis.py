@@ -61,15 +61,17 @@ def plotParamsdf(df=None, number_points = 0):
                     r"$\rho_x$",
                     r"$n_y$",                   
                     r"$m_x$"]
+    units = [r"$nM/min$", r"$nM/min$", r"$nM/min$", r"$nM^{-1}$", r"$nM^{-1}$", r"$nM^{-1}$", r"$min^{-1}$", r"$min^{-1}$", r"$min^{-1}$", "", ""]
 
     fig, axes = plt.subplots(4,3)
 
-    for i, param_name in enumerate(param_names):
+    for i, (param_name,unit) in enumerate(zip(param_names, units)):
         if param_name:
             ax = axes.flat[i]
             sns.violinplot(data=df[param_name], ax = ax) #,palette="Pastel1")
             ax.set_xticks([0])
             ax.set_xticklabels([param_name])        
+            ax.set_ylabel(unit)
 
     """
     for param_id in range(len(param_names)):
@@ -83,7 +85,7 @@ def plotParamsdf(df=None, number_points = 0):
     plt.savefig(os.path.join(base_path_robustness, 'params_distrib_sns.pdf'), bbox_inches = 'tight')
     plt.show()
 
-def test_random_point()):
+def test_random_point():
     points = model_regions[0].points
     candidate = tuple(points[randint(0,len(points)-1)])
     
@@ -101,8 +103,8 @@ if __name__ == "__main__":
     # SETTINGS
     #
     read_data = True
-    ga_solutions = True
-    local_solutions = False
+    ga_solutions = False
+    local_solutions = True
 
     
     
@@ -129,7 +131,7 @@ if __name__ == "__main__":
             if ga_solutions:
                 region_files.append(os.path.join(base_path_opt, model_str+"ViableSet_IterGA.p"))
             if local_solutions:
-                for i in range(10):
+                for i in range(5):
                     region_files.append(os.path.join(base_path_opt, model_str+"Region0ViableSet_Iter" + str(i+1) + ".p"))
 
         viablePoints = []   
@@ -145,8 +147,8 @@ if __name__ == "__main__":
 
 
  
-    ##df = getParamDistrib(file_name="results_robustness\\params.csv")
-    #df = pd.read_csv("results_robustness\\params.csv")
-    #plotParamsdf(df)
+    df = getParamDistrib(file_name="results_robustness\\params.csv")
+    df = pd.read_csv("results_robustness\\params.csv")
+    plotParamsdf(df)
 
-    test_random_point()
+    #test_random_point()

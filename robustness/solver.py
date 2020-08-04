@@ -79,7 +79,7 @@ creator.create("Candidate", list, fitness=creator.FitnessMax)
                                                                
 
 class Solver:
-    def __init__(self, model, populationSize=10000, NGEN = 10, nsamples = 1e5):                                                                     
+    def __init__(self, model, populationSize=10000, NGEN = 10, nsamples = 1e5, random_candidates = False):                                                                    
         self.model = model                   
         self.populationSize = populationSize          
         self.NGEN = NGEN              
@@ -90,7 +90,10 @@ class Solver:
         #creator.create("FitnessMax", base.Fitness, weights=(1.0,)) 
         #creator.create("Candidate", list, fitness=creator.FitnessMax)       
         self.toolbox = base.Toolbox()    
-        self.toolbox.register("candidate", self.generateCandidate) 
+        if random_candidates: 
+            self.toolbox.register("candidate", self.generateRandomCandidate) 
+        else:
+            self.toolbox.register("candidate", self.generateCandidate) 
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.candidate)  
         self.toolbox.register("mate", tools.cxTwoPoint)
         self.toolbox.register("mutate", self.mutateCandidate, indpb=self.indpb, mult=0.5)      
@@ -135,7 +138,14 @@ class Solver:
         print("Elapsed time: " + str(toc - tic) + "s")                          
         return nominalVals        
         
-    #creates an array of random candidates  
+    #creates an array of random candidates 
+    def generateRandomCandidate(self): 
+        candidate = []
+        for ind in range(self.model.nParams): 
+            candidate.append(random.uniform(self.model.parameter_values[self.model.params[ind]]["min"], self.model.parameter_values[self.model.params[ind]]["max"]))            
+        return creator.Candidate(candidate) 
+     
+     
     def generateCandidate(self): 
         candidate = []
         for ind in range(self.model.nParams): 
@@ -441,9 +451,9 @@ class Solver:
 if __name__ == '__main__':
 
     
-    folder = "results" 
+    filename = "results\\" 
     
     #model = BioProc(np.array(["protein_production", "protein_production", "protein_production", "protein_production", "protein_degradation", "protein_degradation", "Kd","hill", "protein_production", "protein_degradation", "Kd", "hill"]), model_mode=three_bit_processor_ext, parameter_values=param_values, avg_dev=30)                                         
     model = model_clb()
     solver = Solver(model)                         
-    solver.run(folder, maxDepth=1) #do not cluster         
+    solver.run(filename, maxDepth=1) #do not cluster         
