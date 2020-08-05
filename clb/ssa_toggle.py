@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 from parameters import *
 from models import *
 
-def simulateStochasticToggle(params, Y0, Omega, T_end): 
+def simulate_stochastic_toggle(params, Y0, Omega, T_end): 
             
-        state = np.array(Y0*Omega)
+        state = np.array(Y0)
         
         Y_total = []
         Y_total.append(state)
@@ -80,7 +80,7 @@ Y0[1] = 1 # L_B
 Y0[2] = 1 # a
 #Y0[3] = 0.1 # b
 
-T, Y = simulateStochasticToggle(params, Y0, Omega, 300)
+T, Y = simulate_stochastic_toggle(params, Y0*Omega, Omega, 300)
 
 
 L_A = Y[:,0]

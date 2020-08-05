@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 from parameters import *
 from models import *
 
-def simulateStochasticMux(params, Y0, Omega, T_end, dt = 1): 
+def simulate_stochastic_mux(params, Y0, Omega, T_end, dt = 1): 
             
-        state = np.array(Y0*Omega)
+        state = np.array(Y0)
         
         Y_total = np.zeros([1+T_end//dt, len(state)])
         T = np.zeros(1+T_end//dt)
         t = 0 
 
-        Y_total[:, 0]
+        Y_total[0, :] = state
         T[0] = t
    
         N = MUX_4_1_generate_stoichiometry()
@@ -58,7 +58,7 @@ def simulateStochasticMux(params, Y0, Omega, T_end, dt = 1):
 
 rho_x = 0 
 params = [delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X]
-Omega = 50
+Omega = 10
 
 # I0, I1, I2, I3
 I = np.array([0, 1, 0, 0])
@@ -73,7 +73,7 @@ Y0[:4] = I
 Y0[4:6] = S
 
 
-T, Y = simulateStochasticMux(params, Y0, Omega, 100)
+T, Y = simulate_stochastic_mux(params, Y0*Omega, Omega, 100)
 
 out = Y[:,-1]
 #plt.plot(T,out)
