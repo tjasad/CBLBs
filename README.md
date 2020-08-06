@@ -20,7 +20,7 @@ The main files that can be used to reproduce the results reported in the paper [
 
 ## References:
 
-[1] Moškon M, et al. Configurable (bio)logic blocks for distributed biological computing. In review.
+[1] Moškon M, et al. Configurable (bio)logic blocks for distributed biological computing. In preparation.
 
 [2] Urrios A, Macia J, Manzoni R, Conde N, Bonforti A, de Nadal E, Posas F, Solé R. A synthetic multicellular memory device. ACS synthetic biology. 2016 Aug 19;5(8):862-73.
 
