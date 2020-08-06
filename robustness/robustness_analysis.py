@@ -69,9 +69,15 @@ def plotParamsdf(df=None, number_points = 0):
         if param_name:
             ax = axes.flat[i]
             sns.violinplot(data=df[param_name], ax = ax) #,palette="Pastel1")
-            ax.set_xticks([0])
-            ax.set_xticklabels([param_name])        
-            ax.set_ylabel(unit)
+            ax.set_xticks([])
+            #ax.set_xticks([0])
+            #ax.set_xticklabels([param_name])    
+            if unit:    
+                ax.set_ylabel(param_name + " [" + unit + "]")
+            else:
+                ax.set_ylabel(param_name)
+
+            #ax.set_yscale('log')
 
     """
     for param_id in range(len(param_names)):
@@ -82,16 +88,13 @@ def plotParamsdf(df=None, number_points = 0):
     fig=plt.gcf()
 
     fig.set_size_inches([20,12])
-    plt.savefig(os.path.join(base_path_robustness, 'params_distrib_sns.pdf'), bbox_inches = 'tight')
+    plt.savefig('results_robustness\\params_distrib_sns.pdf', bbox_inches = 'tight')
     plt.show()
 
 def test_random_point():
     points = model_regions[0].points
     candidate = tuple(points[randint(0,len(points)-1)])
-    
-    #out = model.simulate(candidate[:8]+candidate[9:], plot_on=True)
-    out = model.simulate(candidate, plot_on=True)
-
+    model.simulate(candidate, plot_on=True)
 
 if __name__ == "__main__":
 
@@ -108,9 +111,8 @@ if __name__ == "__main__":
 
     
     
-    base_paths_opt = ["results"]
-    base_path_robustness = "results"
-
+    base_paths_opt = ["results_optimization\\cblb", "results_optimization\\0cblb"]
+    
 
     #
     # END OF SETTINGS
@@ -125,20 +127,24 @@ if __name__ == "__main__":
 
         model_regions = []
 
-        model_str = ""
+        
         region_files =  []
         for base_path_opt in base_paths_opt:
             if ga_solutions:
-                region_files.append(os.path.join(base_path_opt, model_str+"ViableSet_IterGA.p"))
+                region_files.append(base_path_opt + "_ViableSet_IterGA.p")
             if local_solutions:
-                for i in range(5):
-                    region_files.append(os.path.join(base_path_opt, model_str+"Region0ViableSet_Iter" + str(i+1) + ".p"))
+                for i in range(10):
+                    region_files.append(base_path_opt+"_Region0ViableSet_Iter" + str(i+1) + ".p")
 
+        
         viablePoints = []   
         for region_file in region_files: 
-            viablePointsRegion = pickle.load(open(region_file, "rb"))   
-            print(len(viablePointsRegion))   
-            viablePoints.extend(viablePointsRegion)
+            try:
+                viablePointsRegion = pickle.load(open(region_file, "rb"))   
+                print(len(viablePointsRegion))   
+                viablePoints.extend(viablePointsRegion)
+            except:
+                print("Load of " + region_file + " failed!")
         print("Number of points: ",len(viablePoints))
         region = Region(viablePoints, model, "region")              
         model_regions.append(region)                                                                        
@@ -152,3 +158,4 @@ if __name__ == "__main__":
     plotParamsdf(df)
 
     #test_random_point()
+    

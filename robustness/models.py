@@ -2,6 +2,11 @@
 
 import numpy as np
 
+def merge_N(x,y):
+    x1 = np.append(x, np.zeros([x.shape[0], y.shape[1]]), axis=1)
+    y1 = np.append(np.zeros([y.shape[0], x.shape[1]]), y, axis=1)
+    return np.append(x1,y1,axis=0)
+
 def not_cell(state, params):
     L_X, x, y, N_X, N_Y = state
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x = params
@@ -118,6 +123,68 @@ def toggle_model_stochastic(state, params, Omega):
     #p4 = population_stochastic(N_B, r_B, Omega)
         
     return p1 + p2
+
+def toggle_generate_stoichiometry():
+    #
+        # x axis ... species # Y = L_A, L_B, a, b, N_A, N_B
+        # y axis ... reactions
+        #
+        idx_L_A, idx_L_B, idx_a, idx_b, idx_N_A, idx_N_B = 0,1,2,3,4,5
+
+        N = np.zeros((6, 10))
+
+        # reaction 0
+        r = 0
+        # 0 --> L_A
+        N[idx_L_A, r] = 1
+
+        # reaction 1
+        r = 1
+        # L_A --> 0
+        N[idx_L_A, r] = -1
+
+        # reaction 2
+        r = 2
+        # 0 --> a
+        N[idx_a, r] = 1
+
+        # reaction 3
+        r = 3
+        # a --> 0
+        N[idx_a, r] = -1
+
+        # reaction 4
+        r = 4
+        # a --> 0
+        N[idx_a, r] = -1
+
+        # reaction 5
+        r = 5
+        # 0 --> L_B
+        N[idx_L_B, r] = 1
+
+        # reaction 6
+        r = 6
+        # L_B --> 0
+        N[idx_L_B, r] = -1
+
+        # reaction 7
+        r = 7
+        # 0 --> b
+        N[idx_b, r] = 1
+
+        # reaction 8
+        r = 8
+        # b --> 0
+        N[idx_b, r] = -1
+
+        # reaction 9
+        r = 9
+        # b --> 0
+        N[idx_b, r] = -1
+
+        return N
+
 
 # L_A ... intermediate
 # a ... out
@@ -314,6 +381,455 @@ def MUX_4_1_model(state, T, params):
 
     return dstate
 
+def MUX_4_1_generate_stoichiometry():
+
+    """
+    I0, I1, I2, I3, S0, S1 = state[:6]
+    I0_out, I1_out, I2_out, I3_out = state[6:10]
+    L_I0_I0, L_I1_S0, L_I1_I1, L_I2_S1, L_I2_I2, L_I3_S0, L_I3_S1, L_I3_I3, L_I0, L_I1, L_I2, L_I3 = state[10:22]
+    N_I0_S0, N_I0_S1, N_I0_I0, N_I1_S0, N_I1_S1, N_I1_I1, N_I2_S0, N_I2_S1, N_I2_I2, N_I3_S0, N_I3_S1, N_I3_I3, N_I0, N_I1, N_I2, N_I3 = state[22:38]
+    out = state[38]
+    """
+    #I0, I1, I2, I3, S0, S1 = range(6)
+    I0_out, I1_out, I2_out, I3_out = range(6,10)
+    L_I0_I0, L_I1_S0, L_I1_I1, L_I2_S1, L_I2_I2, L_I3_S0, L_I3_S1, L_I3_I3, L_I0, L_I1, L_I2, L_I3 = range(10,22)
+    #N_I0_S0, N_I0_S1, N_I0_I0, N_I1_S0, N_I1_S1, N_I1_I1, N_I2_S0, N_I2_S1, N_I2_I2, N_I3_S0, N_I3_S1, N_I3_I3, N_I0, N_I1, N_I2, N_I3 = range(22,38)
+    out = 38
+
+    #
+    # x axis ... species 
+    # y axis ... reactions
+    #
+    N = np.zeros((39, 72))
+
+    """
+    # yes S0: I0_S0
+    """
+
+    r = 0
+    # reaction 0
+    # 0 --> I0_out     
+    N[I0_out, r] = 1
+    
+    
+    r += 1        
+    # reaction 1
+    # I0_out --> 0
+    N[I0_out, r] = -1
+    
+    r += 1
+    # reaction 2
+    # I0_out --> 0
+    N[I0_out, r] = -1
+    
+    """
+    # yes S1: I0_S1 
+    """
+
+    r += 1
+    # reaction 3
+    # 0 --> I0_out
+    N[I0_out, r] = 1
+
+    r += 1
+    # reaction 4
+    # I0_out --> 0
+    N[I0_out, r] = -1
+
+    r += 1
+    # reaction 5
+    # I0_out --> 0
+    N[I0_out, r] = -1
+
+    """
+    # not I0: I0_I0 
+    """
+
+    r += 1
+    # reaction 6
+    # 0 --> L_I0_I0
+    N[L_I0_I0, r] = 1
+
+    r += 1
+    # reaction 7
+    # L_I0_I0 --> 0
+    N[L_I0_I0, r] = -1
+    
+    r += 1
+    # reaction 8
+    # 0 --> I0_out     
+    N[I0_out, r] = 1
+
+    r += 1
+    # reaction 9
+    # I0_out --> 0
+    N[I0_out, r] = -1
+
+    r += 1
+    # reaction 10
+    # I0_out --> 0
+    N[I0_out, r] = -1
+
+    """
+    # not S0: I1_S0
+    """
+
+    r += 1
+    # reaction 11
+    # 0 --> L_I1_S0
+    N[L_I1_S0, r] = 1
+
+    r += 1
+    # reaction 12
+    # L_I1_S0 --> 0
+    N[L_I1_S0, r] = -1
+
+    r += 1
+    # reaction 13
+    # 0 --> I1_out
+    N[I1_out, r] = 1
+    
+    r += 1
+    # reaction 14
+    # I1_out --> 0
+    N[I1_out, r] = -1
+
+    r += 1
+    # reaction 15
+    # I1_out --> 0
+    N[I1_out, r] = -1
+
+    """
+    # yes S1: I1_S1
+    """
+
+    r += 1
+    # reaction 16
+    # 0 --> I1_out
+    N[I1_out, r] = 1
+
+    r += 1
+    # reaction 17
+    # I1_out --> 0
+    N[I1_out, r] = -1
+
+    r += 1
+    # reaction 18
+    # I1_out --> 0
+    N[I1_out, r] = -1
+
+    """
+    # not I1: I1_I1
+    """
+
+    r += 1
+    # reaction 19
+    # 0 --> L_I1_I1
+    N[L_I1_I1, r] = 1
+
+    r += 1
+    # reaction 20
+    # L_I1_I1 --> 0
+    N[L_I1_I1, r] = -1
+
+    r += 1
+    # reaction 21
+    # 0 --> I1_out
+    N[I1_out, r] = 1
+
+    r += 1
+    # reaction 22
+    # I1_out --> 0
+    N[I1_out, r] = -1
+
+    r += 1
+    # reaction 23
+    # I1_out --> 0
+    N[I1_out, r] = -1
+
+    """
+    # yes S0: I2_S0
+    """
+
+    r += 1
+    # reaction 24
+    # 0 --> I2_out
+    N[I2_out, r] = 1
+
+    r += 1
+    # reaction 25
+    # I2_out --> 0
+    N[I2_out, r] = -1
+
+    r += 1
+    # reaction 26
+    # I2_out --> 0
+    N[I2_out, r] = -1
+
+    """
+    # not S1: I2_S1
+    """
+
+    r += 1
+    # reaction 27
+    # 0 --> L_I2_S1
+    N[L_I2_S1, r] = 1
+
+    r += 1
+    # reaction 28
+    # L_I2_S1 --> 0
+    N[L_I2_S1, r] = -1
+
+    r += 1
+    # reaction 29
+    # 0 --> I2_out
+    N[I2_out, r] = 1
+    
+    r += 1
+    # reaction 30
+    # I2_out --> 0
+    N[I2_out, r] = -1
+
+    r += 1
+    # reaction 31
+    # I2_out --> 0
+    N[I2_out, r] = -1
+
+    """
+    # not I2: I2_I2
+    """
+
+    r += 1
+    # reaction 32
+    # 0 --> L_I2_I2
+    N[L_I2_I2, r] = 1
+
+    r += 1
+    # reaction 33
+    # L_I2_I2 --> 0
+    N[L_I2_I2, r] = -1
+
+    r += 1
+    # reaction 34
+    # 0 --> I2_out
+    N[I2_out, r] = 1
+
+    r += 1
+    # reaction 35
+    # I2_out --> 0
+    N[I2_out, r] = -1
+
+    r += 1
+    # reaction 36
+    # I2_out --> 0
+    N[I2_out, r] = -1
+
+    """ 
+    # not S0: I3_S0
+    """
+
+    r += 1
+    # reaction 37
+    # 0 --> L_I3_S0
+    N[L_I3_S0, r] = 1
+
+    r += 1
+    # reaction 38
+    # 0 --> L_I3_S0
+    N[L_I3_S0, r] = -1
+
+    r += 1
+    # reaction 39
+    # 0 --> I3_out
+    N[I3_out, r] = 1
+
+
+    r += 1
+    # reaction 40
+    # I3_out --> 0
+    N[I3_out, r] = -1
+
+    r += 1
+    # reaction 41
+    # I3_out --> 0
+    N[I3_out, r] = -1
+
+    """
+    # not S1: I3_S1
+    """
+
+    r += 1
+    # reaction 42
+    # 0 --> L_I3_S1
+    N[L_I3_S1, r] = 1
+
+    r += 1
+    # reaction 43
+    # L_I3_S1 --> 0
+    N[L_I3_S1, r] = -1
+
+    r += 1
+    # reaction 44
+    # 0 --> I3_out
+    N[L_I3_S1, r] = 1
+
+    r += 1
+    # reaction 45
+    # I3_out --> 0
+    N[I3_out, r] = -1
+
+    r += 1
+    # reaction 46
+    # I3_out --> 0
+    N[I3_out, r] = -1
+
+    """
+    # not I3: I3_I3
+    """
+
+    r += 1
+    # reaction 47
+    # 0 --> L_I3_I3
+    N[L_I3_I3, r] = 1
+
+    r += 1
+    # reaction 48
+    # L_I3_I3 --> 0
+    N[L_I3_I3, r] = -1
+
+    r += 1
+    # reaction 49
+    # 0 --> I3_out
+    N[I3_out, r] = 1
+
+    r += 1
+    # reaction 50
+    # I3_out --> 0
+    N[I3_out, r] = -1
+
+    r += 1
+    # reaction 51
+    # I3_out --> 0
+    N[I3_out, r] = -1
+
+    """ 
+    # not I0: I0
+    """
+
+    r += 1
+    # reaction 52
+    # 0 --> L_I0
+    N[L_I0, r] = 1
+
+    r += 1
+    # reaction 53
+    # L_I0 --> 0
+    N[L_I0, r] = -1
+
+    r += 1
+    # reaction 54
+    # 0 --> out
+    N[out, r] = 1
+
+    r += 1
+    # reaction 55
+    # out --> 0
+    N[out, r] = -1
+
+    r += 1
+    # reaction 56
+    # out --> 0
+    N[out, r] = -1
+
+    """
+    # not I1: I1
+    """
+
+    r += 1
+    # reaction 57
+    # 0 --> L_I1
+    N[L_I1, r] = 1
+
+    r += 1
+    # reaction 58
+    # L_I1 --> 0
+    N[L_I1, r] = -1
+
+    r += 1
+    # reaction 59
+    # 0 --> out
+    N[out, r] = 1
+
+    r += 1
+    # reaction 60
+    # out --> 0
+    N[out, r] = -1
+
+    r += 1
+    # reaction 61
+    # out --> 0
+    N[out, r] = -1
+
+    """
+    # not I2: I2
+    """
+
+    r += 1
+    # reaction 62
+    # 0 --> L_I2
+    N[L_I2, r] = 1
+
+    r += 1
+    # reaction 63
+    # L_I2 --> 0
+    N[L_I2, r] = -1
+
+    r += 1
+    # reaction 64
+    # 0 --> out
+    N[out, r] = 1
+
+    r += 1
+    # reaction 65
+    # out --> 0
+    N[out, r] = -1
+
+    r += 1
+    # reaction 66
+    # out --> 0
+    N[out, r] = -1
+
+    """
+    # not I3: I3
+    """
+
+    r += 1
+    # reaction 67
+    # 0 --> L_I3
+    N[L_I3, r] = 1
+
+    r += 1
+    # reaction 68
+    # L_I3 --> 0
+    N[L_I3, r] = -1
+
+    r += 1
+    # reaction 69
+    # 0 --> out
+    N[out, r] = 1
+
+    r += 1
+    # reaction 70
+    # out --> 0
+    N[out, r] = -1
+
+    r += 1
+    # reaction 71
+    # out --> 0
+    N[out, r] = -1
+
+    return N
+
 def MUX_4_1_model_stochastic(state, params, Omega):
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X = params
     params_yes = gamma_x, n_y, theta_x, delta_x, rho_x
@@ -431,6 +947,19 @@ def MUX_4_1_model_stochastic(state, params, Omega):
            p_I0 + p_I1 + p_I2 + p_I3)
 
 
+def CLB_generate_stoichiometry():
+    N_toggle_IO = toggle_generate_stoichiometry()
+    N_toggle_I1 = toggle_generate_stoichiometry()
+    N_toggle_I2 = toggle_generate_stoichiometry()
+    N_toggle_I3 = toggle_generate_stoichiometry()
+
+
+    N_mux = MUX_4_1_generate_stoichiometry()
+    # skip first four rows (I0, I1, I2, I3)
+    N_mux = N_mux[4:,:]
+
+    return merge_N(merge_N(merge_N(merge_N(N_toggle_IO, N_toggle_I1), N_toggle_I2), N_toggle_I3), N_mux)
+
 def CLB_model(state, T, params):
     
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X, r_Y, rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b = params
@@ -510,6 +1039,82 @@ def CLB_model(state, T, params):
     dstate = np.append(dstate_toggles, dstate_mux, axis = 0)
     return dstate
 
+
+def CLB_model_stochastic(state, params, Omega):
+    
+    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X, r_Y, rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b = params
+ 
+  
+    """
+    latches
+    """
+    #########
+    # params
+
+    # set params for symmetric toggle switch topology
+    gamma_L_Y, theta_L_Y = gamma_L_X, theta_L_X
+    n_x, m_y = n_y, m_x
+    eta_y, omega_y = eta_x, omega_x
+ 
+    params_toggle =  [delta_L, gamma_L_X, gamma_L_Y, n_x, n_y, theta_L_X, theta_L_Y, eta_x, eta_y, omega_x, omega_y, m_x, m_y, delta_x, delta_y, rho_x, rho_y, r_X, r_Y]
+
+    # degradation rates for induction of switches are specific for each toggle switch    
+    params_toggle_I0 =  params_toggle.copy()
+    params_toggle_I0[-4:-2] = rho_I0_a, rho_I0_b
+    params_toggle_I1 =  params_toggle.copy()
+    params_toggle_I1[-4:-2] = rho_I1_a, rho_I1_b
+    params_toggle_I2 =  params_toggle.copy()
+    params_toggle_I2[-4:-2] = rho_I2_a, rho_I2_b
+    params_toggle_I3 =  params_toggle.copy()
+    params_toggle_I3[-4:-2] = rho_I3_a, rho_I3_b   
+
+    #########
+    # states
+    
+    # latch I0
+    I0_L_A, I0_L_B, I0_a, I0_b, I0_N_a, I0_N_b = state[:6]
+    state_toggle_IO = I0_L_A, I0_L_B, I0_a, I0_b, I0_N_a, I0_N_b
+
+    # latch I1
+    I1_L_A, I1_L_B, I1_a, I1_b, I1_N_a, I1_N_b = state[6:12]
+    state_toggle_I1 = I1_L_A, I1_L_B, I1_a, I1_b, I1_N_a, I1_N_b
+
+    # latch I2
+    I2_L_A, I2_L_B, I2_a, I2_b, I2_N_a, I2_N_b = state[12:18]
+    state_toggle_I2 = I2_L_A, I2_L_B, I2_a, I2_b, I2_N_a, I2_N_b
+
+    # latch I3
+    I3_L_A, I3_L_B, I3_a, I3_b, I3_N_a, I3_N_b = state[18:24]
+    state_toggle_I3 = I3_L_A, I3_L_B, I3_a, I3_b, I3_N_a, I3_N_b
+
+    #########
+    # models
+    p_toggle_IO = toggle_model_stochastic(state_toggle_IO, params_toggle_I0, Omega)
+    p_toggle_I1 = toggle_model_stochastic(state_toggle_I1, params_toggle_I1, Omega)
+    p_toggle_I2 = toggle_model_stochastic(state_toggle_I2, params_toggle_I2, Omega)
+    p_toggle_I3 = toggle_model_stochastic(state_toggle_I3, params_toggle_I3, Omega)
+
+    """
+    mux
+    """
+    #########
+    # params
+    params_mux = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X
+
+    #########
+    # state
+    I0, I1, I2, I3 = I0_a, I1_a, I2_a, I3_a
+    state_mux = np.append([I0, I1, I2, I3], state[24:], axis=0)
+
+    ########
+    # model
+    p_mux = MUX_4_1_model_stochastic(state_mux, params_mux, Omega)
+
+    """
+    return
+    """
+
+    return p_toggle_IO + p_toggle_I1 + p_toggle_I2 + p_toggle_I3 + p_mux
 
 
 

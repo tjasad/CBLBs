@@ -282,7 +282,7 @@ class model_clb:
             ax6 = plt.subplot(313)
             ax6.plot(T,out, color = "#8080805a", alpha=0.75)
             #ax6.set_title('out')
-            ax6.legend('out')
+            ax6.legend(['out'])
             ax6.set_xlabel("Time [min]")
             ax6.set_ylabel("Concentrations [nM]")
 
