@@ -13,10 +13,10 @@ The project is organized in the following folders
 ## Main files
 The main files that can be used to reproduce the results reported in the paper [1] are as follows
 * [```clb/models.py```](/clb/models.py): the implementation of deterministic and stochastic models.
-* [```clb/run_ode_model_clb.py```](blob/master/clb/run_ode_model_clb.py): deterministic simulation of a CBLB.
-* [```clb/run_ssa_model_clb.py```](blob/master/clb/run_ssa_model_clb.py): stochastic simulation of a CBLB.
-* [```robustness/run_solver.py```](blob/master/robustness/run_solver.py): perform the exploration of viable parameter space.
-* [```robustness/robustness_analysis.py```](blob/master/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
+* [```clb/run_ode_model_clb.py```](/clb/run_ode_model_clb.py): deterministic simulation of a CBLB.
+* [```clb/run_ssa_model_clb.py```](/clb/run_ssa_model_clb.py): stochastic simulation of a CBLB.
+* [```robustness/run_solver.py```](/robustness/run_solver.py): perform the exploration of viable parameter space.
+* [```robustness/robustness_analysis.py```](/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
 
 ## References:
 
