@@ -7,12 +7,16 @@ The project is organized in the following folders
 * [```clb```](/clb/): deterministic and stochastic models of a CLBL and its modules.
 * [```robustness```](/robustness/): analysis of robustness.
 * [```latch```](/latch/): model of a mutlicellular latch, i.e. toggle switch, as described in [2].
-* [```mux```](/muc/): model of a mutlicellular multiplexer and derivation of its kinetic parameters as described in [3].
+* [```mux```](/mux/): model of a mutlicellular multiplexer and derivation of its kinetic parameters as described in [3].
 
 
 ## Main files
-The main files that can be used to reproduce the results reported in the paper are as follows
-* [```clb/models.py```](blob/master/clb/models.py): the implementation of deterministic and stochastic models
+The main files that can be used to reproduce the results reported in the paper [1] are as follows
+* [```clb/models.py```](blob/master/clb/models.py): the implementation of deterministic and stochastic models.
+* [```clb/run_ode_model_clb.py```](blob/master/clb/run_ode_model_clb.py): deterministic simulation of a CBLB.
+* [```clb/run_ssa_model_clb.py```](blob/master/clb/run_ssa_model_clb.py): stochastic simulation of a CBLB.
+* [```robustness/run_solver.py```](blob/master/robustness/run_solver.py): perform the exploration of viable parameter space.
+* [```robustness/robustness_analysis.py```](blob/master/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
 
 ## References:
 
