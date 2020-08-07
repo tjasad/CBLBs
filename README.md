@@ -18,6 +18,16 @@ The main files that can be used to reproduce the results reported in the paper [
 * [```robustness/run_solver.py```](/robustness/run_solver.py): perform the exploration of viable parameter space.
 * [```robustness/robustness_analysis.py```](/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
 
+## Requirements
+* `DEAP
+* `multiprocessing
+* `SciPy
+* `NumPy
+* `seaborn
+* `matplotlib
+* `pandas
+* `pickle
+
 ## References:
 
 [1] Moškon M, et al. Configurable (bio)logic blocks for distributed biological computing. In preparation.
