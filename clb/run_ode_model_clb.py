@@ -34,7 +34,7 @@ states = [([0,0], [0,0,0,0]),
 
 
 # simulation parameters (for a single state)
-t_end = 400
+t_end = 500
 N = t_end
 
 rho_x = 0
@@ -84,7 +84,7 @@ for iteration, state in enumerate(states):
         rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b = (1-I0) * 5, I0*5, (1-I1)*5, I1*5, (1-I2)*5, I2*5, (1-I3)*5, I3*5
         
     
-
+    rho_x, rho_y = 0,0
     params = (delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X, r_Y, 
          rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b)
 
