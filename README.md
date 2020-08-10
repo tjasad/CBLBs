@@ -19,7 +19,7 @@ The main files that can be used to reproduce the results reported in the paper [
 * [```robustness/robustness_analysis.py```](/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
 
 ## Requirements
-Before running the code the following libraries should be installed
+You should install the following libraries before running the code 
 * `DEAP`
 * `multiprocessing`
 * `SciPy`
