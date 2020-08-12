@@ -87,7 +87,7 @@ def plotParamsdf(df=None, number_points = 0):
     """ 
     fig=plt.gcf()
 
-    fig.set_size_inches([20,12])
+    fig.set_size_inches([15,12])
     plt.savefig('results_robustness\\params_distrib_sns.pdf', bbox_inches = 'tight')
     plt.show()
 
