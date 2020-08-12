@@ -4,7 +4,7 @@ This repository is supplementing the paper Field-programmable biological circuit
 
 ## Folders
 The project is organized in the following folders
-* [```clb```](/clb/): deterministic and stochastic models of a CLBL and its modules.
+* [```clb```](/clb/): deterministic and stochastic models of a CBLB and its modules.
 * [```robustness```](/robustness/): analysis of robustness.
 * [```latch```](/latch/): model of a multicellular latch, i.e. toggle switch, as described in [2].
 * [```mux```](/mux/): model of a multicellular multiplexer and derivation of its kinetic parameters using the transfer-function models and values from [3].
