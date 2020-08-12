@@ -4,7 +4,7 @@ This repository is supplementing the paper Field-programmable biological circuit
 
 ## Folders
 The project is organized in the following folders
-* [```clb```](/clb/): deterministic and stochastic models of a CBLB and its modules.
+* [```cblb```](/cblb/): deterministic and stochastic models of a CBLB and its modules.
 * [```robustness```](/robustness/): analysis of robustness.
 * [```latch```](/latch/): model of a multicellular latch, i.e. toggle switch, as described in [2].
 * [```mux```](/mux/): model of a multicellular multiplexer and derivation of its kinetic parameters using the transfer-function models and values from [3].
@@ -12,9 +12,9 @@ The project is organized in the following folders
 
 ## Main files
 The main files that can be used to reproduce the results reported in the paper [1] are as follows
-* [```clb/models.py```](/clb/models.py): the implementation of deterministic and stochastic models.
-* [```clb/run_ode_model_clb.py```](/clb/run_ode_model_clb.py): deterministic simulation of a CBLB.
-* [```clb/run_ssa_model_clb.py```](/clb/run_ssa_model_clb.py): stochastic simulation of a CBLB.
+* [```cblb/models.py```](/cblb/models.py): the implementation of deterministic and stochastic models.
+* [```cblb/run_ode_model_clb.py```](/cblb/run_ode_model_clb.py): deterministic simulation of a CBLB.
+* [```cblb/run_ssa_model_clb.py```](/cblb/run_ssa_model_clb.py): stochastic simulation of a CBLB.
 * [```robustness/run_solver.py```](/robustness/run_solver.py): perform the exploration of viable parameter space as described in [4].
 * [```robustness/robustness_analysis.py```](/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
 
