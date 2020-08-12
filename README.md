@@ -1,6 +1,6 @@
 # CBLBs: Configurable (Bio)Logic Blocks
 
-This repository is supplementing the paper Field-programmable biological circuits and configurable (bio)logic blocks for distributed biological computin [1]. 
+This repository is supplementing the paper Field-programmable biological circuits and configurable (bio)logic blocks for distributed biological computing [1]. 
 
 ## Folders
 The project is organized in the following folders
@@ -31,7 +31,7 @@ You should install the following libraries before running the code
 
 ## References:
 
-[1] Moškon M, et al. Field-programmable biological circuits and configurable (bio)logic blocks for distributed biological computin. In preparation.
+[1] Moškon M, et al. Field-programmable biological circuits and configurable (bio)logic blocks for distributed biological computing. In review.
 
 [2] Urrios A, Macia J, Manzoni R, Conde N, Bonforti A, de Nadal E, Posas F, Solé R. A synthetic multicellular memory device. ACS synthetic biology. 2016 Aug 19;5(8):862-73.
 
