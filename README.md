@@ -15,6 +15,7 @@ The main files that can be used to reproduce the results reported in the paper [
 * [```cblb/models.py```](/cblb/models.py): the implementation of deterministic and stochastic models.
 * [```cblb/run_ode_model_clb.py```](/cblb/run_ode_model_clb.py): deterministic simulation of a CBLB.
 * [```cblb/run_ssa_model_clb.py```](/cblb/run_ssa_model_clb.py): stochastic simulation of a CBLB.
+* [```cblb/run_ODE_AND_OR_NOT.py```](/cblb/run_ODE_AND_OR_NOT.py): deterministic simulation of a CBLB configured as AND, OR and NOT gate.
 * [```robustness/run_solver.py```](/robustness/run_solver.py): perform the exploration of viable parameter space as described in [4].
 * [```robustness/robustness_analysis.py```](/robustness/robustness_analysis.py): visualize and analyse the results of the obtained viable parameter space.
 
