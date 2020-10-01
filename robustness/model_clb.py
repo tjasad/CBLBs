@@ -147,10 +147,10 @@ class model_clb:
         N_I2 = np.array([1,1])
         N_I3 = np.array([1,1])
 
-        Y0[4:6] = N_I0
-        Y0[10:12] = N_I1
-        Y0[16:18] = N_I2
-        Y0[22:24] = N_I3
+        Y0[4:6] = N_I0 # 2
+        Y0[10:12] = N_I1 # 2
+        Y0[16:18] = N_I2 # 2
+        Y0[22:24] = N_I3 # 2
 
         # number of cells: mux
         #Y0[22-4+24:38-4+24] = 1 # number of cells
