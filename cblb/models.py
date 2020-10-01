@@ -11,8 +11,12 @@ def not_cell(state, params):
     L_X, x, y, N_X, N_Y = state
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x = params
 
+    # presume that the molecules are degraded in the same strain as they are produced
+    N_Y = N_X
+
+
     f = gamma_L_X * (y ** n_y)/(1 + (theta_L_X*y)**n_y )
-    dL_X_dt = f - delta_L * L_X
+    dL_X_dt = N_X * (f - delta_L * L_X)
 
     dx_dt = N_X * (eta_x * (1/(1+ (omega_x*L_X)**m_x))) - N_Y * (delta_x * x) - rho_x * x
 
@@ -22,6 +26,10 @@ def not_cell_stochastic(state, params, Omega):
     L_X, x, y, N_X, N_Y = state
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x = params
 
+    # presume that the molecules are degraded in the same strain as they are produced
+    N_Y = N_X
+
+
     gamma_L_X *= Omega
     eta_x *= Omega
     theta_L_X /= Omega
@@ -30,8 +38,8 @@ def not_cell_stochastic(state, params, Omega):
 
     p = [0]*5
     
-    p[0] = gamma_L_X * (y ** n_y)/(1 + (theta_L_X*y)**n_y ) / Omega
-    p[1] = delta_L * L_X
+    p[0] = N_X * gamma_L_X * (y ** n_y)/(1 + (theta_L_X*y)**n_y ) / Omega
+    p[1] = N_X * delta_L * L_X
 
     p[2] = N_X * (eta_x * (1/(1+ (omega_x*L_X)**m_x)))
     p[3] = N_Y * (delta_x * x)
@@ -44,6 +52,10 @@ def yes_cell(state, params):
     x, y, N_X, N_Y = state
     gamma_x, n_y, theta_x, delta_x, rho_x = params
 
+    # presume that the molecules are degraded in the same strain as they are produced
+    N_Y = N_X
+
+
     dx_dt = N_X * gamma_x * (y ** n_y)/(1 + (theta_x*y)**n_y ) - N_Y * (delta_x * x) - rho_x * x
     
     return dx_dt
@@ -51,6 +63,10 @@ def yes_cell(state, params):
 def yes_cell_stochastic(state, params, Omega):
     x, y, N_X, N_Y = state
     gamma_x, n_y, theta_x, delta_x, rho_x = params
+
+    # presume that the molecules are degraded in the same strain as they are produced
+    N_Y = N_X
+
 
     gamma_x *= Omega
     theta_x /= Omega
