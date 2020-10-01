@@ -43,7 +43,7 @@ def not_cell_stochastic(state, params, Omega):
 
     p[2] = N_X * (eta_x * (1/(1+ (omega_x*L_X)**m_x)))
     p[3] = N_Y * (delta_x * x)
-    p[4] = N_X * rho_x * x
+    p[4] = rho_x * x
 
     return p
 
