@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     
     
-    base_paths_opt = ["results_optimization_population\\cblb_pop"]
+    base_paths_opt = ["results_optimization_population\\fracs\\cblb_pop"]
     
 
     #
@@ -162,8 +162,8 @@ if __name__ == "__main__":
 
 
  
-    df = getParamDistrib(file_name="results_robustness_population\\params.csv")
-    df = pd.read_csv("results_robustness_population\\params.csv")
+    df = getParamDistrib(file_name="results_robustness_population\\fracs\\params.csv")
+    df = pd.read_csv("results_robustness_population\\fracs\\params.csv")
     plotParamsdf(df)
 
     #test_random_point()
