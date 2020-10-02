@@ -38,3 +38,4 @@ elif scenario == "b":
     r_X, r_Y = r_B, r_B
 
 
+print(delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X, r_Y)

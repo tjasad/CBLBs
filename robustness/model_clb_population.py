@@ -13,7 +13,7 @@ def_parameter_values = {
             "delta": {"min": 0.01, "max": 10},  
             "theta": {"min": 0.01, "max": 10**3}, 
             "rho" :  {"min": 0.1, "max": 10},
-            "frac": {"min": 0, "max": 1}}  
+            "N": {"min": 0, "max": 1}}  
 
 param_references = (delta_L, 
                     gamma_L_X, 
@@ -26,6 +26,7 @@ param_references = (delta_L,
                     gamma_x, 
                     theta_x, 
                     rho_x,
+                    1,
                     1,
                     1,
                     1,
@@ -43,10 +44,11 @@ param_names = ["delta",
                "gamma",
                "theta",
                "rho",
-               "frac",
-               "frac",
-               "frac",
-               "frac"]
+               "N",
+               "N",
+               "N",
+               "N",
+               "N"]
 
 
 
@@ -62,12 +64,16 @@ class model_clb_population:
         
         self.states = [([0,0], [0,0,0,0]), 
                 ([0,0], [1,0,0,0]), 
+                ([0,0], [0,0,0,0]),
                 ([1,0], [1,0,0,0]),
                 ([1,0], [0,1,0,0]), 
+                ([1,0], [0,0,0,0]), 
                 ([0,1], [0,1,0,0]),
                 ([0,1], [0,0,1,0]), 
+                ([0,1], [0,0,0,0]), 
                 ([1,1], [0,0,1,0]), 
-                ([1,1], [0,0,0,1])]
+                ([1,1], [0,0,0,1]),
+                ([1,1], [0,0,0,0])]
 
 
         # simulation parameters (for a single state)
@@ -100,7 +106,7 @@ class model_clb_population:
         #print(S)
 
         O = np.zeros(n)
-        O[1::2] = 1
+        O[1::3] = 1
         #print(O)        
 
 
@@ -131,7 +137,7 @@ class model_clb_population:
     def simulate(self, candidate, plot_on=False):
 
 
-        delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, frac_toggle, frac_S, frac_I, frac_out = candidate
+        delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho,  N_TS, N_not_TS, N_S, N_I, N_out = candidate
         delta_y = delta_x
         rho_x = 0
         rho_y = 0
@@ -148,45 +154,43 @@ class model_clb_population:
                 rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b)
         """
 
-        N_Toggle_not = 1
-        N_Toggle = N_Toggle_not * frac_toggle
         """
         Toggle Switches
         """
         # 8 different cells
 
-        N_not_TS0 = N_Toggle_not
-        N_TS0 = N_Toggle
+        N_not_TS0 = N_not_TS
+        N_TS0 = N_TS
 
-        N_not_TS1 = N_Toggle_not 
-        N_TS1 = N_Toggle
+        N_not_TS1 = N_not_TS 
+        N_TS1 = N_TS
 
-        N_not_TS2 = N_Toggle_not
-        N_TS2 = N_Toggle
+        N_not_TS2 = N_not_TS
+        N_TS2 = N_TS
 
-        N_not_TS3 = N_Toggle_not
-        N_TS3 = N_Toggle
+        N_not_TS3 = N_not_TS
+        N_TS3 = N_TS
 
         """
         MUX
         """
         # 17 different cells
-        N_I0_S0 = N_Toggle_not * frac_S
-        N_I0_S1 = N_Toggle_not * frac_S
-        N_I0_I0 = N_Toggle_not * frac_I
-        N_I1_S0 = N_Toggle_not * frac_S
-        N_I1_S1 = N_Toggle_not * frac_S
-        N_I1_I1 = N_Toggle_not * frac_I
-        N_I2_S0 = N_Toggle_not * frac_S
-        N_I2_S1 = N_Toggle_not * frac_S
-        N_I2_I2 = N_Toggle_not * frac_I
-        N_I3_S0 = N_Toggle_not * frac_S
-        N_I3_S1 = N_Toggle_not * frac_S
-        N_I3_I3 = N_Toggle_not * frac_I
-        N_I0 = N_Toggle_not * frac_out
-        N_I1 = N_Toggle_not * frac_out
-        N_I2 = N_Toggle_not * frac_out
-        N_I3 = N_Toggle_not * frac_out
+        N_I0_S0 = N_S
+        N_I0_S1 = N_S
+        N_I0_I0 = N_I
+        N_I1_S0 = N_S
+        N_I1_S1 = N_S
+        N_I1_I1 = N_I
+        N_I2_S0 = N_S
+        N_I2_S1 = N_S
+        N_I2_I2 = N_I
+        N_I3_S0 = N_S
+        N_I3_S1 = N_S
+        N_I3_I3 = N_I
+        N_I0 = N_out
+        N_I1 = N_out
+        N_I2 = N_out
+        N_I3 = N_out
 
 
         # population parameters
@@ -467,13 +471,15 @@ if __name__ == "__main__":
     rho = 5
     #candidate = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, gamma_x, theta_x, rho
 
-    frac_toggle = 1
-    frac_S = 1
-    frac_I = 1
-    frac_out = 1
+    N_TS = 0.5
+    N_not_TS = 1
+    N_S = 1
+    N_I = 1
+    N_out = 1
 
 
-    candidate = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, frac_toggle, frac_S, frac_I, frac_out
+    candidate = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, N_TS, N_not_TS, N_S, N_I, N_out
+
 
     out = clb.simulate(candidate, plot_on=True)
     print(clb.getFitness(out))
