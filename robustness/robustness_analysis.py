@@ -45,7 +45,7 @@ def getParamDistrib(number_points = 0, file_name = ""):
         df.to_csv(file_name, index=False)
     return df
 
-def plotParamsdf(df=None, number_points = 0):
+def plotParamsdf(df=None, number_points = 0, box=False):
     if not type(df):
         df = getParamDistrib(number_points)
     
@@ -68,7 +68,10 @@ def plotParamsdf(df=None, number_points = 0):
     for i, (param_name,unit) in enumerate(zip(param_names, units)):
         if param_name:
             ax = axes.flat[i]
-            sns.violinplot(data=df[param_name], ax = ax) #,palette="Pastel1")
+            if box:
+                sns.boxplot(data=df[param_name], ax = ax) #,palette="Pastel1")
+            else:    
+                sns.violinplot(data=df[param_name], ax = ax, cut=0, color="#3274a1") #,palette="Pastel1")
             ax.set_xticks([])
             #ax.set_xticks([0])
             #ax.set_xticklabels([param_name])    
@@ -88,7 +91,10 @@ def plotParamsdf(df=None, number_points = 0):
     fig=plt.gcf()
 
     fig.set_size_inches([15,12])
-    plt.savefig('results_robustness\\params_distrib_sns.pdf', bbox_inches = 'tight')
+    if box:
+        plt.savefig('results_robustness\\params_distrib_sns_box.pdf', bbox_inches = 'tight')
+    else:
+        plt.savefig('results_robustness\\params_distrib_sns.pdf', bbox_inches = 'tight')
     plt.show()
 
 def test_random_point():
@@ -153,7 +159,7 @@ if __name__ == "__main__":
 
 
  
-    df = getParamDistrib(file_name="results_robustness\\params.csv")
+    #df = getParamDistrib(file_name="results_robustness\\params.csv")
     df = pd.read_csv("results_robustness\\params.csv")
     plotParamsdf(df)
 

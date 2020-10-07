@@ -13,7 +13,7 @@ def_parameter_values = {
             "delta": {"min": 0.01, "max": 10},  
             "theta": {"min": 0.01, "max": 10**3}, 
             "rho" :  {"min": 0.1, "max": 10},
-            "N": {"min": 0, "max": 1}}  
+            "frac": {"min": 0, "max": 10}}  
 
 param_references = (delta_L, 
                     gamma_L_X, 
@@ -26,7 +26,6 @@ param_references = (delta_L,
                     gamma_x, 
                     theta_x, 
                     rho_x,
-                    1,
                     1,
                     1,
                     1,
@@ -43,12 +42,11 @@ param_names = ["delta",
                "delta",
                "gamma",
                "theta",
-               "rho",
-               "N",
-               "N",
-               "N",
-               "N",
-               "N"]
+               "rho",             
+               "frac",
+               "frac",
+               "frac",
+               "frac"]
 
 
 
@@ -73,7 +71,7 @@ class model_clb_population:
                 ([0,1], [0,0,0,0]), 
                 ([1,1], [0,0,1,0]), 
                 ([1,1], [0,0,0,1]),
-                ([1,1], [0,0,0,0])]
+                ([1,1], [0,0,0,0])]                
 
 
         # simulation parameters (for a single state)
@@ -136,8 +134,18 @@ class model_clb_population:
 
     def simulate(self, candidate, plot_on=False):
 
+        N_TS = 1
+        delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, frac_not_TS, frac_S, frac_I, frac_out = candidate
 
-        delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho,  N_TS, N_not_TS, N_S, N_I, N_out = candidate
+        N_not_TS = frac_not_TS * N_TS
+        N_S = frac_S * N_TS
+        N_I = frac_I * N_TS
+        N_out = frac_out * N_TS
+
+
+
+        #delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, N_TS, N_not_TS, N_S, N_I, N_out = candidate
+
         delta_y = delta_x
         rho_x = 0
         rho_y = 0
@@ -471,14 +479,14 @@ if __name__ == "__main__":
     rho = 5
     #candidate = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, gamma_x, theta_x, rho
 
-    N_TS = 0.5
-    N_not_TS = 1
-    N_S = 1
-    N_I = 1
-    N_out = 1
+    #N_TS = 1
+    frac_not_TS = 1
+    frac_S = 1
+    frac_I = 1
+    frac_out = 1
 
 
-    candidate = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, N_TS, N_not_TS, N_S, N_I, N_out
+    candidate = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, gamma_x, theta_x, rho, frac_not_TS, frac_S, frac_I, frac_out
 
 
     out = clb.simulate(candidate, plot_on=True)

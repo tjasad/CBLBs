@@ -32,15 +32,19 @@ def getParamDistrib(number_points = 0, file_name = ""):
                     r"$\eta_x$", 
                     r"$\omega_x$", 
                     r"$m_x$", 
-                    r"$\delta_x$",
-                    #r"$\delta_y$", #to remove
+                    r"$\delta_x$",                    
                     r"$\gamma_x$",
                     r"$\theta_x$",
                     r"$\rho_x$",
-                    r"$frac_{toggle}$",
-                    r"$frac_{S}$",
-                    r"$frac_{I}$",
-                    r"$frac_{out}$"]
+                    #r"$frac_{toggle}$",
+                    #r"$frac_{S}$",
+                    #r"$frac_{I}$",
+                    #r"$frac_{out}$"]
+                    #r"$N_{toggle}$",
+                    r"$N_{toggle\ not}$",
+                    r"$N_{S}$",
+                    r"$N_{I}$",
+                    r"$N_{out}$"]
     
     df = pd.DataFrame(rand_samples[0])
     df.columns = param_names
@@ -60,17 +64,23 @@ def plotParamsdf(df=None, number_points = 0):
                     r"$\omega_x$", 
                     r"$\theta_x$",
                     r"$\delta_L$",  
-                    r"$\delta_x$",
-                    #r"$\delta_y$", #to remove                  
+                    r"$\delta_x$",                                     
                     r"$\rho_x$",
                     r"$n_y$",                   
                     r"$m_x$",
-                    r"$frac_{toggle}$",
-                    r"$frac_{S}$",
-                    r"$frac_{I}$",
-                    r"$frac_{out}$"]
+                    #r"$frac_{toggle}$",
+                    #r"$frac_{S}$",
+                    #r"$frac_{I}$",
+                    #r"$frac_{out}$"]
+                    #r"$N_{toggle}$",
+                    r"$N_{toggle\ not}$",
+                    r"$N_{S}$",
+                    r"$N_{I}$",
+                    r"$N_{out}$"]
     
-    units = [r"$nM/min$", r"$nM/min$", r"$nM/min$", r"$nM^{-1}$", r"$nM^{-1}$", r"$nM^{-1}$", r"$min^{-1}$", r"$min^{-1}$", r"$min^{-1}$", "", "", "", "", "", ""]
+    #units = [r"$nM/min$", r"$nM/min$", r"$nM/min$", r"$nM^{-1}$", r"$nM^{-1}$", r"$nM^{-1}$", r"$min^{-1}$", r"$min^{-1}$", r"$min^{-1}$", "", "", "", "", "", ""]
+    units = [r"$nM/min$", r"$nM/min$", r"$nM/min$", r"$nM^{-1}$", r"$nM^{-1}$", r"$nM^{-1}$", r"$min^{-1}$", r"$min^{-1}$", r"$min^{-1}$", "", "", "", "", "", "", ""]
+    
 
     fig, axes = plt.subplots(4,4)
 
@@ -100,6 +110,54 @@ def plotParamsdf(df=None, number_points = 0):
     #plt.savefig('results_robustness\\params_distrib_sns.pdf', bbox_inches = 'tight')
     plt.show()
 
+
+def plot_populations(df):
+    df = df[df.columns[-5:]]
+    #sns.pairplot(df, kind='scatter', plot_kws={'alpha':0.05})
+    sns.pairplot(df.loc[:100], kind='kde')
+    plt.show()
+
+
+def plot_frac(df, box=False):
+    df = df[df.columns[-4:]]
+    """
+    param_names = df.columns
+    units = ["", "", "", ""]
+
+    fig, axes = plt.subplots(1, 4, sharey=True)
+
+    for i, (param_name,unit) in enumerate(zip(param_names, units)):
+        if param_name:
+            ax = axes.flat[i]
+            if box:
+                sns.boxplot(data=df[param_name], ax = ax)
+            else:
+                sns.violinplot(data=df[param_name], ax = ax, cut = 0)
+            
+            #sns.distplot(df[param_name],ax = ax) #,palette="Pastel1")
+            #ax.hist(df[param_name], bins=100)
+            ax.set_xticks([])
+            ax.set_xticks([])
+            #ax.set_xticklabels([param_name])    
+            if unit:    
+                ax.set_ylabel(param_name + " [" + unit + "]")
+            else:
+                ax.set_ylabel(param_name)
+            ax.tick_params(axis='both', which='both', reset=True)
+                
+
+    fig.set_size_inches([12,4])
+    """
+
+    sns.violinplot(data = df, cut=0, color="#3274a1")
+    plt.ylabel('Population size')
+
+    fig = plt.gcf()
+    fig.set_size_inches([12,4])
+
+    plt.savefig('results_robustness_population\\population_distrib_sns.pdf', bbox_inches = 'tight')        
+    plt.show()
+
 def test_random_point():
     points = model_regions[0].points
     candidate = tuple(points[randint(0,len(points)-1)])
@@ -119,8 +177,7 @@ if __name__ == "__main__":
     local_solutions = True
 
     
-    
-    base_paths_opt = ["results_optimization_population\\fracs\\cblb_pop"]
+    base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
     
 
     #
@@ -140,7 +197,7 @@ if __name__ == "__main__":
         region_files =  []
         for base_path_opt in base_paths_opt:
             if ga_solutions:
-                region_files.append(base_path_opt + "_ViableSet_IterGA.p")
+                region_files.append(base_path_opt + "ViableSet_IterGA.p")
             if local_solutions:
                 for i in range(10):
                     region_files.append(base_path_opt+"_Region0ViableSet_Iter" + str(i+1) + ".p")
@@ -162,9 +219,12 @@ if __name__ == "__main__":
 
 
  
-    df = getParamDistrib(file_name="results_robustness_population\\fracs\\params.csv")
-    df = pd.read_csv("results_robustness_population\\fracs\\params.csv")
-    plotParamsdf(df)
+    df = getParamDistrib(file_name="results_robustness_population\\params_population.csv")
+    #df = pd.read_csv("results_robustness_population\\params_population.csv")
+
+    #plotParamsdf(df)
+    #plot_populations(df)
+    plot_frac(df)
 
     #test_random_point()
     

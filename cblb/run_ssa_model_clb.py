@@ -76,6 +76,7 @@ def simulate_stochastic_clb(params, Y0, Omega, T_end, dt = 1):
 
 Y0 = np.zeros(59)
 
+
 # number of cells: toggle switches
 N_I0 = np.array([1,1])
 N_I1 = np.array([1,1])
@@ -92,8 +93,9 @@ Y0[22:24] = N_I3
 Y0[42:58] = 1 # number of cells
 
 
-
+# reaction space volume for a single cell
 Omega = 10
+
 t_end = 500
 
 
