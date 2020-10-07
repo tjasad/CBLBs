@@ -151,6 +151,8 @@ def plot_frac(df, box=False):
 
     sns.violinplot(data = df, cut=0, color="#3274a1")
     plt.ylabel('Population size')
+    #x1,x2,_,_ = plt.axis()
+    #plt.plot([x1, x2], [1,1], 'r--', linewidth=0.5)
 
     fig = plt.gcf()
     fig.set_size_inches([12,4])
@@ -177,7 +179,8 @@ if __name__ == "__main__":
     local_solutions = True
 
     
-    base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
+    #base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
+    base_paths_opt = ["results_optimization_population\\ziga_cblb_pop"]
     
 
     #
