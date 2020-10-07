@@ -128,3 +128,21 @@ dmypy.json
 # Pyre type checker
 .pyre/
 robustness/test.ipynb
+.vscode/launch.json
+
+robustness/__pycache__/
+robustness/.ipynb_checkpoints/
+mux/__pycache__/
+mux/.ipynb_checkpoints/
+cblb/__pycache__/
+cblb/.ipynb_checkpoints/
+latch/__pycache__/
+latch/.ipynb_checkpoints/
+
+*.py[cod]
+*$py.class
+
+
+.ipynb_checkpoints
+
+.vscode
