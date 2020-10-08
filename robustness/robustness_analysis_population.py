@@ -179,8 +179,8 @@ if __name__ == "__main__":
     local_solutions = True
 
     
-    #base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
-    base_paths_opt = ["results_optimization_population\\ziga_cblb_pop"]
+    base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
+    #base_paths_opt = ["results_optimization_population\\ziga_cblb_pop"]
     
 
     #
