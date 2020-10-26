@@ -179,9 +179,8 @@ if __name__ == "__main__":
     local_solutions = True
 
     
-    #base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
-    base_paths_opt = ["results_optimization_population\\ziga_cblb_pop"]
-    
+    base_paths_opt = ["results_optimization_population\\cblb_pop_frac"]
+
 
     #
     # END OF SETTINGS
@@ -228,6 +227,9 @@ if __name__ == "__main__":
     #plotParamsdf(df)
     #plot_populations(df)
     plot_frac(df)
+
+    print(np.round(df.mean(),2))
+    print(np.round(df.std(),2))
 
     #test_random_point()
     
