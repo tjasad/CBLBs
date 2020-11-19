@@ -33,7 +33,7 @@ You should install the following libraries before running the code
 * `pickle`
 
 ## How to cite this work
-You can cite this work as
+Please cite this work as
 
 Moškon M, Pušnik Ž, Zimic N, Mraz M. Field-programmable biological circuits and configurable (bio)logic blocks for distributed biological computing. Computers in Biology and Medicine. 2021; 128: 104109, https://doi.org/10.1016/j.compbiomed.2020.104109.
 
