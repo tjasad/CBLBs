@@ -95,9 +95,7 @@ Y0[42:58] = 1 # number of cells
 
 # reaction space volume for the whole cell population
 # N_cells should be set to 1
-Omega = 5
-
-
+Omega = 10
 
 t_end = 500
 
