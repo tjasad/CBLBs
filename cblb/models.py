@@ -7,6 +7,7 @@ def merge_N(x,y):
     y1 = np.append(np.zeros([y.shape[0], x.shape[1]]), y, axis=1)
     return np.append(x1,y1,axis=0)
 
+# a model of inverter
 def not_cell(state, params):
     L_X, x, y, N_X, N_Y = state
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x = params
@@ -55,7 +56,7 @@ def not_cell_stochastic(state, params, Omega):
 
     return p
 
-
+# a model of driver
 def yes_cell(state, params):
     x, y, N_X, N_Y = state
     gamma_x, n_y, theta_x, delta_x, rho_x = params
