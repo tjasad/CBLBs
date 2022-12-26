@@ -411,6 +411,143 @@ def MUX_4_1_model(state, T, params):
 
     return dstate
 
+def ENCODER_4_2_model(state, T, params):
+    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X = params
+    params_yes = gamma_x, n_y, theta_x, delta_x, rho_x
+    params_not = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x
+
+
+    I0, I1, I2, I3 = state[:4]
+    M0_out, M1_out, M2_out, M3_out = state[4:8]
+    #L...
+    L_M0_I1, L_O0_M0 = state[8:10]
+    #N...
+    N_M0_I1, N_M0_I2, N_M1_I3, N_M2_I2, N_M2_I3, N_M3_I0, N_M3_I1, N_M3_I2, N_M3_I3, N_O0_M0, N_O0_M1, N_O1, N_V  = state[10:23]
+    O0_out, O1_out, V_out = state[23:26]
+    """
+    M0
+    """
+    dM0_out = 0
+
+    # not I1: M0_I1
+    state_not_M0_I1 = L_M0_I1, M0_out, I1, N_M0_I1
+    dL_M0_I1, dd = not_cell_wrapper(state_not_M0_I1, params_not)
+    dM0_out += dd
+    dN_M0_I1 = population(N_M0_I1, r_X)
+
+    # yes I2: M0_I2
+    state_yes_M0_I2 = M0_out, I2, N_M0_I2
+    dM0_out += yes_cell_wrapper(state_yes_M0_I2, params_yes)
+    dN_M0_I2 = population(N_M0_I2, r_X)
+
+
+    """
+    M1
+    """
+    dM1_out = 0
+
+    # yes I3: M1_I3
+    state_yes_M1_I3 = M1_out, I3, N_M1_I3
+    dM1_out += yes_cell_wrapper(state_yes_M1_I3, params_yes)
+    dN_M1_I3 = population(N_M1_I3, r_X)
+
+
+    """
+    M2
+    """
+    dM2_out = 0
+
+    # yes I2: M2_I2
+    state_yes_M2_I2 = M2_out, I2, N_M2_I2
+    dM2_out += yes_cell_wrapper(state_yes_M2_I2, params_yes)
+    dN_M2_I2 = population(N_M2_I2, r_X)
+
+    # yes I3: M2_I3
+    state_yes_M2_I3 = M2_out, I3, N_M2_I3
+    dM2_out += yes_cell_wrapper(state_yes_M2_I3, params_yes)
+    dN_M2_I3 = population(N_M2_I3, r_X)
+
+    """
+    M3
+    """
+    dM3_out = 0
+
+    # yes I0: M3_I0
+    state_yes_M3_I0 = M3_out, I0, N_M3_I0
+    dM3_out += yes_cell_wrapper(state_yes_M3_I0, params_yes)
+    dN_M3_I0 = population(N_M3_I0, r_X)
+
+    # yes I1: M3_I1
+    state_yes_M3_I1 = M3_out, I1, N_M3_I1
+    dM3_out += yes_cell_wrapper(state_yes_M3_I1, params_yes)
+    dN_M3_I1 = population(N_M3_I1, r_X)
+
+    # yes I2: M3_I2
+    state_yes_M3_I2 = M3_out, I2, N_M3_I2
+    dM3_out += yes_cell_wrapper(state_yes_M3_I2, params_yes)
+    dN_M3_I2 = population(N_M3_I2, r_X)
+
+    # yes I3: M3_I3
+    state_yes_M3_I3 = M3_out, I3, N_M3_I3
+    dM3_out += yes_cell_wrapper(state_yes_M3_I3, params_yes)
+    dN_M3_I3 = population(N_M3_I3, r_X)
+
+
+    """
+    O0
+    """
+    dO0_out = 0
+
+    # not M0: O0_M0
+    state_not_O0_M0 = L_O0_M0, O0_out, M0_out, N_O0_M0
+    dL_O0_M0, dd = not_cell_wrapper(state_not_O0_M0, params_not)
+    dO0_out += dd
+    dN_O0_M0 = population(N_O0_M0, r_X)
+
+    # yes M1: O0_M1
+    state_yes_O0_M1 = O0_out, M1_out, N_O0_M1
+    dO0_out += yes_cell_wrapper(state_yes_O0_M1, params_yes)
+    dN_O0_M1 = population(N_O0_M1, r_X)
+
+
+    """
+    O1
+    """
+    dO1_out = 0
+
+    #yes M2: O1_M2
+    state_yes_O1_M2 = O1_out, M2_out, N_O1
+    dO1_out += yes_cell_wrapper(state_yes_O1_M2, params_yes)
+    dN_O1 = population(N_O1, r_X)
+
+
+    """
+    V
+    """
+    dV_out = 0
+
+    #yes M3: V_M3
+    state_yes_V_M3 = V_out, M3_out, N_V
+    dV_out += yes_cell_wrapper(state_yes_V_M3, params_yes)
+    dN_V = population(N_V, r_X)
+
+
+
+
+
+
+    dI0, dI1, dI2, dI3 = 0, 0, 0, 0
+
+    dstate = np.array([
+        dI0, dI1, dI2, dI3,
+        dM0_out, dM1_out, dM2_out, dM3_out,
+        dL_M0_I1, dL_O0_M0,
+        dN_M0_I1, dN_M0_I2, dN_M1_I3, dN_M2_I2, dN_M2_I3, dN_M3_I0, dN_M3_I1, dN_M3_I2, dN_M3_I3, dN_O0_M0, dN_O0_M1, dN_O1, dN_V,
+        dO0_out, dO1_out, dV_out
+    ])
+
+    return dstate
+
 def MUX_4_1_generate_stoichiometry():
 
     """
@@ -860,6 +997,9 @@ def MUX_4_1_generate_stoichiometry():
 
     return N
 
+def ENCODER_4_2_generate_stoichiometry():
+    raise NotImplementedError
+
 def MUX_4_1_model_stochastic(state, params, Omega):
     delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X = params
     params_yes = gamma_x, n_y, theta_x, delta_x, rho_x
@@ -976,6 +1116,8 @@ def MUX_4_1_model_stochastic(state, params, Omega):
            p_I3_S0 + p_I3_S1 + p_I3_I3 +
            p_I0 + p_I1 + p_I2 + p_I3)
 
+def ENCODER_4_2_model_stochastic(state, params, Omega):
+    raise NotImplementedError
 
 def CLB_generate_stoichiometry():
     N_toggle_IO = toggle_generate_stoichiometry()
@@ -989,6 +1131,9 @@ def CLB_generate_stoichiometry():
     N_mux = N_mux[4:,:]
 
     return merge_N(merge_N(merge_N(merge_N(N_toggle_IO, N_toggle_I1), N_toggle_I2), N_toggle_I3), N_mux)
+
+def CLB_4_2_ENCODER_generate_stoichiometry():
+    raise NotImplementedError
 
 def CLB_model(state, T, params):
     
@@ -1069,6 +1214,84 @@ def CLB_model(state, T, params):
     dstate = np.append(dstate_toggles, dstate_mux, axis = 0)
     return dstate
 
+def CLB_4_2_ENCODER_model(state, T, params):
+    
+    delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, delta_y, rho_x, rho_y, gamma_x, theta_x, r_X, r_Y, rho_I0_a, rho_I0_b, rho_I1_a, rho_I1_b, rho_I2_a, rho_I2_b, rho_I3_a, rho_I3_b = params
+ 
+  
+    """
+    latches
+    """
+    #########
+    # params
+
+    # set params for symmetric toggle switch topology
+    gamma_L_Y, theta_L_Y = gamma_L_X, theta_L_X
+    n_x, m_y = n_y, m_x
+    eta_y, omega_y = eta_x, omega_x
+ 
+    params_toggle =  [delta_L, gamma_L_X, gamma_L_Y, n_x, n_y, theta_L_X, theta_L_Y, eta_x, eta_y, omega_x, omega_y, m_x, m_y, delta_x, delta_y, rho_x, rho_y, r_X, r_Y]
+
+    # degradation rates for induction of switches are specific for each toggle switch    
+    params_toggle_I0 =  params_toggle.copy()
+    params_toggle_I0[-4:-2] = rho_I0_a, rho_I0_b
+    params_toggle_I1 =  params_toggle.copy()
+    params_toggle_I1[-4:-2] = rho_I1_a, rho_I1_b
+    params_toggle_I2 =  params_toggle.copy()
+    params_toggle_I2[-4:-2] = rho_I2_a, rho_I2_b
+    params_toggle_I3 =  params_toggle.copy()
+    params_toggle_I3[-4:-2] = rho_I3_a, rho_I3_b   
+
+    #########
+    # states
+    
+    # latch I0
+    I0_L_A, I0_L_B, I0_a, I0_b, I0_N_a, I0_N_b = state[:6]
+    state_toggle_IO = I0_L_A, I0_L_B, I0_a, I0_b, I0_N_a, I0_N_b
+
+    # latch I1
+    I1_L_A, I1_L_B, I1_a, I1_b, I1_N_a, I1_N_b = state[6:12]
+    state_toggle_I1 = I1_L_A, I1_L_B, I1_a, I1_b, I1_N_a, I1_N_b
+
+    # latch I2
+    I2_L_A, I2_L_B, I2_a, I2_b, I2_N_a, I2_N_b = state[12:18]
+    state_toggle_I2 = I2_L_A, I2_L_B, I2_a, I2_b, I2_N_a, I2_N_b
+
+    # latch I3
+    I3_L_A, I3_L_B, I3_a, I3_b, I3_N_a, I3_N_b = state[18:24]
+    state_toggle_I3 = I3_L_A, I3_L_B, I3_a, I3_b, I3_N_a, I3_N_b
+
+    #########
+    # models
+    dstate_toggle_IO = toggle_model(state_toggle_IO, T, params_toggle_I0)
+    dstate_toggle_I1 = toggle_model(state_toggle_I1, T, params_toggle_I1)
+    dstate_toggle_I2 = toggle_model(state_toggle_I2, T, params_toggle_I2)
+    dstate_toggle_I3 = toggle_model(state_toggle_I3, T, params_toggle_I3)
+
+    dstate_toggles = np.append(np.append(np.append(dstate_toggle_IO, dstate_toggle_I1, axis=0), dstate_toggle_I2, axis = 0), dstate_toggle_I3, axis = 0)
+
+    """
+    decoder
+    """
+    #########
+    # params
+    params_dec = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X
+
+    #########
+    # state
+    I0, I1, I2, I3 = I0_a, I1_a, I2_a, I3_a
+    state_dec = np.append([I0, I1, I2, I3], state[24:], axis=0)
+
+    ########
+    # model
+    dstate_dec = ENCODER_4_2_model(state_dec, T, params_dec)
+    dstate_dec = dstate_dec[4:] # ignore dI0, dI1, dI2, dI3
+
+    """
+    return
+    """
+    dstate = np.append(dstate_toggles, dstate_dec, axis = 0)
+    return dstate
 
 def CLB_model_stochastic(state, params, Omega):
     
@@ -1146,7 +1369,8 @@ def CLB_model_stochastic(state, params, Omega):
 
     return p_toggle_IO + p_toggle_I1 + p_toggle_I2 + p_toggle_I3 + p_mux
 
-
+def CLB_4_2_ENCODER_model_stochastic(state, params, Omega):
+    raise NotImplementedError
 
 """
 wrappers for scipy.integrate.ode
@@ -1168,3 +1392,8 @@ def MUX_4_1_model_ODE(T, state, params):
 def CLB_model_ODE(T, state, params):
     return CLB_model(state, T, params)
 
+def ENCODER_4_2_model_ODE(T, state, params):
+    return ENCODER_4_2_model(state, T, params)
+
+def CLB_4_2_ENCODER_model_ODE(T, state, params):
+    return CLB_4_2_ENCODER_model(T, state, params)
