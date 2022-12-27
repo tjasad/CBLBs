@@ -10,7 +10,7 @@ rho_y = 0
 params = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X
 
 # I0, I1, I2, I3
-I = np.array([0, 0, 0, 0])
+I = np.array([1, 1, 0, 1])
 """# S0, S1
 S = np.array([1, 1])"""
 
@@ -25,7 +25,6 @@ N = t_end
 Y0 = np.zeros(26)
 """Y0[22:38] = 1 # number of cells"""
 Y0[10:23] = 1 # number of cells
-print(Y0)
 
 Y0[:4] = I
 """Y0[4:6] = S"""
