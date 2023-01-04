@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from parameters import *
 from models import *
+from binarize import binarize
 
 def simulate_stochastic_mux(params, Y0, Omega, T_end, dt = 1): 
             
@@ -66,7 +67,7 @@ Omega = 10
 
 
 # I0, I1, I2, I3
-I = np.array([1, 0, 0, 0])*100
+I = np.array([0, 1, 0, 0])*100
 """
 # S0, S1
 S = np.array([1, 0])
@@ -105,6 +106,11 @@ I3_out = Y[:,9]
 
 out = Y[:,-1]"""
 
+M0_out = Y[:,4]
+M1_out = Y[:,5]
+M2_out = Y[:,6]
+M3_out = Y[:,7]
+
 O0_out = Y[:,-3]
 O1_out = Y[:,-2]
 V_out = Y[:,-1]
@@ -132,17 +138,37 @@ ax5 = plt.subplot(212)
 ax5.plot(T,out)
 ax5.set_title('out')
 """
-ax1 = plt.subplot(331)
-ax1.plot(T, O0_out)
-ax1.legend(["O0_out"])
+# plot M outputs
+"""
+ax1 = plt.subplot(411)
+ax1.plot(T, M0_out)
+ax1.legend(["M0_out"])
 
-ax1 = plt.subplot(332)
-ax1.plot(T, O1_out)
-ax1.legend(["O1_out"])
+ax2 = plt.subplot(412)
+ax2.plot(T, M1_out)
+ax2.legend(["M1_out"])
 
-ax1 = plt.subplot(333)
-ax1.plot(T, V_out)
-ax1.legend(["V_out"])
+ax3 = plt.subplot(413)
+ax3.plot(T, M2_out)
+ax3.legend(["M2_out"])
+
+ax4 = plt.subplot(414)
+ax4.plot(T, M3_out)
+ax4.legend(["M3_out"])
+plt.show()
+"""
+
+ax5 = plt.subplot(311)
+ax5.plot(T, binarize(O0_out))
+ax5.legend(["O0_out"])
+
+ax6 = plt.subplot(312)
+ax6.plot(T, binarize(O1_out))
+ax6.legend(["O1_out"])
+
+ax7 = plt.subplot(313)
+ax7.plot(T, binarize(V_out))
+ax7.legend(["V_out"])
 
 """plt.suptitle(f"S = [{S[1]},{S[0]}]")"""
 plt.show()
