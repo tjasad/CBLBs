@@ -22,7 +22,6 @@ I_list = [
     np.array([0,1,0,0]),
     np.array([0,0,1,0]),
     np.array([0,0,0,1]),
-    
 ]
 #I = np.array([0, 1, 0, 0])
 """# S0, S1
@@ -70,18 +69,26 @@ l = len(I_list)
 
 if l > 1:
     fig, axs = plt.subplots(l)
-    fig.tight_layout()
+    fig.tight_layout(rect=(0.025,0.025,1,1))
+    fig.supylabel('Value')
+    fig.supxlabel('Time [min]')
 
     for i, (O0, O1, V) in enumerate(zip(O0_list, O1_list, V_list)):
         axs[i].plot(T,binarize(O0), label="O0")
         axs[i].plot(T,binarize(O1), label="O1")
         axs[i].plot(T,binarize(V), label="V")
         axs[i].set_title("Input: "+str(I_list[i]))
+        
 else:
-    plt.plot(T,binarize(O0_list[0]), label="O0")
+    plt.plot(T,binarize(O0_list[0]), label="O0")    
     plt.plot(T,binarize(O1_list[0]), label="O1")
     plt.plot(T,binarize(V_list[0]), label="V")
+    plt.xlabel('Concentrations [nM]')
+    plt.ylabel('Time [min]')
     plt.suptitle("Input: "+str(I_list[0]))
+
+
+
 
 
 plt.legend()

@@ -424,6 +424,7 @@ def ENCODER_4_2_model(state, T, params):
     #N...
     N_M0_I1, N_M0_I2, N_M1_I3, N_M2_I2, N_M2_I3, N_M3_I0, N_M3_I1, N_M3_I2, N_M3_I3, N_O0_M0, N_O0_M1, N_O1, N_V  = state[10:23]
     O0_out, O1_out, V_out = state[23:26]
+    
     """
     M0
     """
@@ -1656,26 +1657,26 @@ def CLB_4_2_ENCODER_model(state, T, params):
     dstate_toggles = np.append(np.append(np.append(dstate_toggle_IO, dstate_toggle_I1, axis=0), dstate_toggle_I2, axis = 0), dstate_toggle_I3, axis = 0)
 
     """
-    decoder
+    encoder
     """
     #########
     # params
-    params_dec = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X
+    params_enc = delta_L, gamma_L_X, n_y, theta_L_X, eta_x, omega_x, m_x, delta_x, rho_x, gamma_x, theta_x, r_X
 
     #########
     # state
     I0, I1, I2, I3 = I0_a, I1_a, I2_a, I3_a
-    state_dec = np.append([I0, I1, I2, I3], state[24:], axis=0)
+    state_enc = np.append([I0, I1, I2, I3], state[24:], axis=0)
 
     ########
     # model
-    dstate_dec = ENCODER_4_2_model(state_dec, T, params_dec)
-    dstate_dec = dstate_dec[4:] # ignore dI0, dI1, dI2, dI3
-
+    dstate_enc = ENCODER_4_2_model(state_enc, T, params_enc)
+    dstate_enc = dstate_enc[4:] # ignore dI0, dI1, dI2, dI3
+    
     """
     return
     """
-    dstate = np.append(dstate_toggles, dstate_dec, axis = 0)
+    dstate = np.append(dstate_toggles, dstate_enc, axis = 0)
     return dstate
 
 def CLB_model_stochastic(state, params, Omega):
@@ -1854,4 +1855,4 @@ def ENCODER_4_2_model_ODE(T, state, params):
     return ENCODER_4_2_model(state, T, params)
 
 def CLB_4_2_ENCODER_model_ODE(T, state, params):
-    return CLB_4_2_ENCODER_model(T, state, params)
+    return CLB_4_2_ENCODER_model(state, T, params)

@@ -5,7 +5,7 @@ from parameters import *
 from models import *
 from binarize import binarize
 
-def simulate_stochastic_mux(params, Y0, Omega, T_end, dt = 1): 
+def simulate_stochastic_encoder(params, Y0, Omega, T_end, dt = 1): 
             
         state = np.array(Y0)
         
@@ -40,7 +40,7 @@ def simulate_stochastic_mux(params, Y0, Omega, T_end, dt = 1):
         
             #print(t)       
             #select reaction 
-            reaction_number = np.argwhere(asum > r2*a0)[0,0] #get first element         
+            reaction_number = np.argwhere(asum > r2*a0)[0,0] #get first element     
         
             #update concentrations
             state = state + N[:,reaction_number]      
@@ -67,7 +67,8 @@ Omega = 10
 
 
 # I0, I1, I2, I3
-I = np.array([0, 1, 0, 0])*100
+inp = [0, 1, 0, 0]
+I = np.array(inp)*100
 """
 # S0, S1
 S = np.array([1, 0])
@@ -83,7 +84,7 @@ Y0[:4] = I
 """Y0[4:6] = S"""
 
 
-T, Y = simulate_stochastic_mux(params, Y0, Omega, 100)
+T, Y = simulate_stochastic_encoder(params, Y0, Omega, 100)
 
 """
 out = Y[:,-1]
@@ -160,15 +161,23 @@ plt.show()
 
 ax5 = plt.subplot(311)
 ax5.plot(T, binarize(O0_out))
-ax5.legend(["O0_out"])
+ax5.legend(["O0"])
+ax5.set_xlabel("Time [min]")
+ax5.set_ylabel("Molecules")
 
 ax6 = plt.subplot(312)
 ax6.plot(T, binarize(O1_out))
-ax6.legend(["O1_out"])
+ax6.legend(["O1"])
+ax6.set_xlabel("Time [min]")
+ax6.set_ylabel("Molecules")
 
 ax7 = plt.subplot(313)
 ax7.plot(T, binarize(V_out))
-ax7.legend(["V_out"])
+ax7.legend(["V"])
+ax7.set_xlabel("Time [min]")
+ax7.set_ylabel("Molecules")
+
+plt.suptitle("Input: "+str(inp))
 
 """plt.suptitle(f"S = [{S[1]},{S[0]}]")"""
 plt.show()
